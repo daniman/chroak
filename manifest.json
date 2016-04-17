@@ -1,18 +1,22 @@
 {
   "manifest_version": 2,
 
-  "name": "Getting started example",
-  "description": "This extension shows a Google Image search result for the current page",
+  "name": "Chroak",
+  "description": "6.857 Final Project",
   "version": "1.0",
+
+  // "chrome_url_overrides": {
+  //   "newtab": "app.html"
+  // },
 
   "browser_action": {
     "default_icon": "ghost.png",
-    "default_popup": "popup.html",
+    "default_popup": "app.html",
     "default_title": "chroak"
   },
+
   "permissions": [
     "activeTab",
-    "https://ajax.googleapis.com/",
     "storage"
   ]
 }

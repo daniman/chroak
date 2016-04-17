@@ -1,0 +1,39 @@
+<head>
+<link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/mncdbnbagganllmlplhgcaooolgjnfio">
+</head>
+
+<body>
+<button id="install-button">Add to Chrome</button>
+
+<iframe src="chrome://extensions/"></iframe>
+
+<script>
+if (chrome.app.isInstalled) {
+  document.getElementById('install-button').style.display = 'none';
+}
+
+var successCallback = function(d) {
+  console.log('success');
+  console.log(d);
+}
+
+var failedCallback = function(d) {
+  console.log('failed');
+  console.log(d);
+}
+
+document.getElementById('install-button').onclick = function(e) {
+  e = new MouseEvent('click', {
+    screenX: 10,
+    screenY: 123,
+    clientX: 22,
+    clientY: 24
+  });
+  console.log(e);
+  console.log('meow');
+  chrome.webstore.install('https://chrome.google.com/webstore/detail/mncdbnbagganllmlplhgcaooolgjnfio', successCallback, failedCallback);
+  console.log('hello');
+}
+
+</script>
+</body>

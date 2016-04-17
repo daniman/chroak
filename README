@@ -1,1 +1,7 @@
+To Install the Extension:
 To load this extension, visit your Chrome Extensions page, turn 'Developer mode' on (checkbox in the top right corner), click 'Load unpacked extension', and select this repo.
+
+To Run the Homepage:
+run "python -m SimpleHTTPServer"
+edit your .hosts file
+open "local.daniman.me:8000/install.html"
