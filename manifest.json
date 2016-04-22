@@ -5,18 +5,44 @@
   "description": "6.857 Final Project",
   "version": "1.0",
 
-  // "chrome_url_overrides": {
-  //   "newtab": "app.html"
-  // },
+  "chrome_url_overrides": {
+    "newtab": "app.html"
+  },
+
+  "icons": { "16": "ghost.png",
+           "48": "ghost.png",
+          "128": "ghost.png" },
 
   "browser_action": {
     "default_icon": "ghost.png",
-    "default_popup": "app.html",
-    "default_title": "chroak"
+    "default_popup": "popup.html",
+    "default_title": "6.857 Final Project: Chroak"
   },
 
   "permissions": [
     "activeTab",
-    "storage"
+    "alarms",
+    "background",
+    "browsingData",
+    "clipboardWrite",
+    "contextMenus",
+    "cookies",
+    "declarativeContent",
+    "fontSettings",
+    "gcm",
+    "identity",
+    "idle",
+    "power",
+    "printerProvider",
+    "sessions",
+    "storage",
+    "system.cpu",
+    "system.display",
+    "system.memory",
+    "system.storage",
+    "tts",
+    "unlimitedStorage",
+    "webRequest",
+    "webRequestBlocking"
   ]
 }

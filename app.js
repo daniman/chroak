@@ -8,6 +8,13 @@
  * @param {function(string)} callback - called when the URL of the current tab
  *   is found.
  */
+
+chrome.tabs.query({}, function(tabs) {
+  console.log(tabs);
+  document.getElementById('tab-number').innerHTML = tabs.length;
+})
+
+
 function getCurrentTabUrl(callback) {
   // Query filter to be passed to chrome.tabs.query - see
   // https://developer.chrome.com/extensions/tabs#method-query
@@ -22,6 +29,7 @@ function getCurrentTabUrl(callback) {
     // one tab, so we can safely assume that |tabs| is a non-empty array.
     // A window can only have one active tab at a time, so the array consists of
     // exactly one tab.
+    console.log(tabs);
     var tab = tabs[0];
 
     // A tab is a plain object that provides information about the tab.
