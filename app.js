@@ -13,8 +13,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     document.getElementById('windows-number').innerHTML = windows.length;
   });
-});
 
+  chrome.system.cpu.getInfo(
+    function(x){
+      // set html
+      document.getElementById('cpu-model').innerHTML = x.modelName;
+      document.getElementById('cpu-arch').innerHTML = x.archName;
+      document.getElementById('num-processors').innerHTML = x.numOfProcessors;
+    }
+  );
+
+});
 
 
 
