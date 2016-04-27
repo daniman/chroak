@@ -2,13 +2,18 @@
 <html>
   <head>
     <script src="app.js"></script>
+    <style>
+      .info {
+        font-weight: bold;
+      }
+    </style>
   </head>
   <body>
     <div>
-      <h1>What do your extensions know about you??</h1>
+      <h1>Well, hello there.</h1>
       <ul>
-        <li>I know you have <span id="tabs-number"></span> tabs open in <span id="windows-number"></span> different windows.</li>
-        <li>I know you have a <span id="cpu-model"></span> and are running <span id="num-processors"></span> processors with <span id="cpu-arch"></span> architecture</li>
+        <li>You have <span id="tabs-number" class="info"></span> tabs open in <span id="windows-number" class="info"></span> different windows.</li>
+        <li>You have a <span id="cpu-model" class="info"></span> and are running <span id="num-processors" class="info"></span> processors with <span id="cpu-arch" class="info"></span> architecture.</li>
       </ul>
     </div>
   </body>
