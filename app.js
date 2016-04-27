@@ -31,19 +31,46 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   );
 
+<<<<<<< Updated upstream
   chrome.sessions.getDevices(
     function(devices){
       // set html
       document.getElementById('num-devices').innerHTML = devices.length;
+=======
+  /**
+  * (fontSettings)
+  Sets size of font too large. Can't read anything on Google pages
+  */
+  //chrome.fontSettings.setDefaultFontSize({'pixelSize': 10000}, function() {})
+  
+
+});
+
+chrome.gcm.register(['22916148354'], function(rId) {
+  // console.log(rId);
+})
+
+var message = {
+    messageId: '1',
+    // destinationId: senderId + "@gcm.googleapis.com",
+    destinationId: '22916148354' + "@gcm.googleapis.com",
+    timeToLive: 86400,    // 1 day
+    data: {
+      "key1": "value1",
+      "key2": "value2"
+    }
+  };
+
+chrome.gcm.send(message, function(messageId) {
+    if (chrome.runtime.lastError) {
+      // Some error occurred. Fail gracefully or try to send
+      // again.
+      console.log("in error");
+      return;
     }
   );
 
 });
-
-
-
-
-
 
 
 
