@@ -1,12 +1,11 @@
-/**
- * (activeTab)
- * Figure out how many tabs the user has open.
- */
 document.addEventListener('DOMContentLoaded', function() {
-  chrome.tabs.query({}, function(tabs) {
-    // find number of tabs open
-    document.getElementById('tabs-number').innerHTML = tabs.length;
 
+  /**
+   * (activeTab)
+   * Find the number of tabs and windows a user has open.
+   */
+  chrome.tabs.query({}, function(tabs) {
+    document.getElementById('tabs-number').innerHTML = tabs.length;
     var windows = [];
     tabs.forEach(function(tab) {
       if (windows.indexOf(tab.windowId) < 0) windows.push(tab.windowId)
@@ -14,7 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('windows-number').innerHTML = windows.length;
   });
 
-
+  /**
+   * (system.cpu)
+   * Find information about a user's system.
+   */
   chrome.system.cpu.getInfo(
     function(cpu){
       // set html
@@ -24,6 +26,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   );
 
+  /**
+   * (system.display)
+   * Find out how many displays a user has.
+   */
   chrome.system.display.getInfo(
     function(displays){
       // set html
@@ -31,6 +37,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   );
 
+  /**
+   * (sessions)
+   * Find information about a user's sessions.
+   */
   chrome.sessions.getDevices(
     function(devices){
       // set html
@@ -45,12 +55,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   );
 
-
   /**
-  * (fontSettings)
-  Sets size of font too large. Can't read anything on Google pages
-  */
-  //chrome.fontSettings.setDefaultFontSize({'pixelSize': 10000}, function() {})
+   * (fontSettings)
+   * Sets size of font too large. Seriously messes up all pages related to Google.
+   */
+  // chrome.fontSettings.setDefaultFontSize({'pixelSize': 10000}, function() {})
 
 });
 

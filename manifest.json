@@ -3,7 +3,7 @@
 
   "name": "Chroak",
   "description": "6.857 Final Project",
-  "version": "1.0",
+  "version": "1.1",
 
   "chrome_url_overrides": {
     "newtab": "app.html"
@@ -15,18 +15,7 @@
 
    "background": {
         "persistent": true,
-        // unlimited notification fun if you uncomment line 22
         "scripts": ["background.js"]
-    },
-
-  "browser_action": {
-    "default_icon": "ghost.png",
-    "default_popup": "popup.html",
-    "default_title": "6.857 Final Project: Chroak",
-    "default_icon": {
-            "19": "ghost.png",
-            "38": "ghost.png"
-          }
     },
 
   "oauth2": {
