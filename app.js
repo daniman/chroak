@@ -107,20 +107,7 @@ chrome.idle.onStateChanged.addListener(function(newState) {
 
 
 
-// var i;
-// for (i=0; i< 10; i++) {
-// 	chrome.notifications.create(i.toString(), {
-//         type: 'basic',
-//         iconUrl: 'ghost.png',
-//         title: 'Don\'t forget!',
-//         message: 'You have things to do. Wake up, dude!',
-//         isClickable: true
-//      }, function(notificationId) {
-//       console.log(notificationId);
-//      });
-// }
-
-var notification= new Notification("New mail from John Doe", { tag: 'msg1'});
+// var notification= new Notification("New mail from John Doe", { tag: 'msg1'});
 
 
 
