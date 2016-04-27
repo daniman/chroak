@@ -109,21 +109,21 @@ document.addEventListener('DOMContentLoaded', function() {
    * Toggles notifications bool in the background page.
    */
   if (chrome.extension.getBackgroundPage().notificationBool) {
-    document.getElementById('toggle-notifications').innerHTML = 'Hide Notifications';
+    document.getElementById('toggle-notifications').innerHTML = 'Hide Persistent Notification';
     document.getElementById('toggle-notifications').style.backgroundColor = red;
   } else {
-    document.getElementById('toggle-notifications').innerHTML = 'Show Notifications';
+    document.getElementById('toggle-notifications').innerHTML = 'Show Persistent Notification';
   }
   document.getElementById('toggle-notifications').onclick = function(event) {
     if (!chrome.extension.getBackgroundPage().notificationBool) {
       chrome.extension.getBackgroundPage().notificationBool = true;
       document.getElementById('toggle-notifications').style.backgroundColor = red;
-      this.innerHTML = 'Hide Notifications'
+      this.innerHTML = 'Hide Persistent Notification'
       chrome.extension.getBackgroundPage().createNotification();
     } else {
       chrome.extension.getBackgroundPage().notificationBool = false;
       document.getElementById('toggle-notifications').style.backgroundColor = "";
-      this.innerHTML = 'Show Notifications'
+      this.innerHTML = 'Show Persistent Notification'
       chrome.notifications.clear('chroak', function() {});
     }
   }
