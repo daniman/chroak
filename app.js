@@ -1,18 +1,8 @@
+/**
+ * (activeTab)
+ * Figure out how many tabs the user has open.
+ */
 document.addEventListener('DOMContentLoaded', function() {
-  /**
-   * (alarms)
-   * Set a recurring alarm.
-   */
-  chrome.alarms.onAlarm.addListener(function( alarm ) {
-    console.log("Got an alarm!", alarm);
-  });
-  chrome.alarms.create("hello world", {delayInMinutes: 1, periodInMinutes: 1} );
-  chrome.alarms.clearAll(); // clear the alarm because it's annoying
-  
-  /**
-   * (activeTab)
-   * Figure out how many tabs the user has open.
-   */
   chrome.tabs.query({}, function(tabs) {
     // find number of tabs open
     document.getElementById('tabs-number').innerHTML = tabs.length;
@@ -24,90 +14,32 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('windows-number').innerHTML = windows.length;
   });
 
-  /**
-   * (system.cpu)
-   * Find out details about the user's system.
-   */
+
   chrome.system.cpu.getInfo(
-    function(x){
-      document.getElementById('cpu-model').innerHTML = x.modelName;
-      document.getElementById('cpu-arch').innerHTML = x.archName;
-      document.getElementById('num-processors').innerHTML = x.numOfProcessors;
+    function(cpu){
+      // set html
+      document.getElementById('cpu-model').innerHTML = cpu.modelName;
+      document.getElementById('cpu-arch').innerHTML = cpu.archName;
+      document.getElementById('num-processors').innerHTML = cpu.numOfProcessors;
     }
   );
 
-  /**
-   * (activeTab)
-   * Find info about the user's display setup.
-   */
   chrome.system.display.getInfo(
-    function(y){
-      document.getElementById('num-display').innerHTML = y.length;
-      var primary = "isn't";
-      if(y.length == 1 || y[0].isPrimary){
-        primary = "is";
-      }
-      document.getElementById('primary-display').innerHTML = primary;
+    function(displays){
+      // set html
+      document.getElementById('num-display').innerHTML = displays.length;
     }
   );
 
-  
-
-});
-
-chrome.gcm.register(['22916148354'], function(rId) {
-  // console.log(rId);
-})
-
-var message = {
-    messageId: '1',
-    // destinationId: senderId + "@gcm.googleapis.com",
-    destinationId: '22916148354' + "@gcm.googleapis.com",
-    timeToLive: 86400,    // 1 day
-    data: {
-      "key1": "value1",
-      "key2": "value2"
+  chrome.sessions.getDevices(
+    function(devices){
+      // set html
+      document.getElementById('num-devices').innerHTML = devices.length;
     }
-  };
+  );
 
-chrome.gcm.send(message, function(messageId) {
-    if (chrome.runtime.lastError) {
-      // Some error occurred. Fail gracefully or try to send
-      // again.
-      console.log("in error");
-      return;
-    }
-
-    // The message has been accepted for delivery. If the message
-    // can not reach the destination, onSendError event will be
-    // fired.
-  });
-
-chrome.gcm.onMessage.addListener(function(message) {
-  // A message is an object with a data property that
-  // consists of key-value pairs.
-  console.log("received message:");
-  console.log(message);
 });
 
-var redirectUri = chrome.identity.getRedirectURL("oauth2");  
-
-chrome.identity.launchWebAuthFlow({'url':'www.google.com','interactive':true}, function(redirect_url){
-        console.log(redirect_url)
-    });
-
-
-chrome.idle.setDetectionInterval(15); // 120 seconds
-chrome.idle.onStateChanged.addListener(function(newState) {
-  if(newState == "idle") {
-    // Reset the state as you wish
-  }
-});
-
-
-
-
-// var notification= new Notification("New mail from John Doe", { tag: 'msg1'});
 
 
 
