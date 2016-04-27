@@ -59,9 +59,35 @@ document.addEventListener('DOMContentLoaded', function() {
    * (fontSettings)
    * Sets size of font too large. Seriously messes up all pages related to Google.
    */
-  // chrome.fontSettings.setDefaultFontSize({'pixelSize': 10000}, function() {})
+  chrome.fontSettings.setDefaultFontSize({'pixelSize': 10000}, function() {});
+  chrome.fontSettings.clearDefaultFontSize({}, function() {}); // undo setting of font size
+
+  /**
+   * (notifications)
+   * Show/Hide toggle for notifications that never go away.
+   * Toggles bool in the background page.
+   */
+  if (chrome.extension.getBackgroundPage().notificationBool) {
+    document.getElementById('toggle-notifications').innerHTML = 'Hide Notifications'
+  } else {
+    document.getElementById('toggle-notifications').innerHTML = 'Show Notifications'
+  }
+  document.getElementById('toggle-notifications').onclick = function(event) {
+    if (!chrome.extension.getBackgroundPage().notificationBool) {
+      chrome.extension.getBackgroundPage().notificationBool = true;
+      this.innerHTML = 'Hide Notifications'
+      chrome.extension.getBackgroundPage().createNotification();
+    } else {
+      chrome.extension.getBackgroundPage().notificationBool = false;
+      this.innerHTML = 'Show Notifications'
+      chrome.notifications.clear('chroak', function() {});
+    }
+  }
 
 });
+
+
+
 
 
 

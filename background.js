@@ -1,3 +1,5 @@
+var notificationBool = false;
+
 var createNotification = function() {
     chrome.notifications.create('chroak', {
         type: 'basic',
@@ -8,8 +10,8 @@ var createNotification = function() {
      }, function(notificationId) {});
 }
 
-// createNotification();
 chrome.notifications.onClosed.addListener(function(notifId, byUser){
-    // createNotification(); //UNCOMMENT THIS IF YOU WANT UNLIMITED NOTIFICATION FUN
-})
-
+  if (notificationBool) {
+    createNotification();
+  }
+});
