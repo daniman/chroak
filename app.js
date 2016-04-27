@@ -31,20 +31,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   );
 
-<<<<<<< Updated upstream
   chrome.sessions.getDevices(
     function(devices){
       // set html
       document.getElementById('num-devices').innerHTML = devices.length;
-=======
+
+      var device_names = " ";
+      devices.forEach(function(device) {
+        device_names = device_names + device.info + " "
+      });
+
+      document.getElementById('devices').innerHTML = device_names;
+    }
+  );
+
+
   /**
   * (fontSettings)
   Sets size of font too large. Can't read anything on Google pages
   */
   //chrome.fontSettings.setDefaultFontSize({'pixelSize': 10000}, function() {})
-  
 
 });
+
+
 
 chrome.gcm.register(['22916148354'], function(rId) {
   // console.log(rId);
