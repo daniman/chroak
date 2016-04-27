@@ -4,7 +4,7 @@ var fontBool = false;
 var createNotification = function() {
     chrome.notifications.create('chroak', {
         type: 'basic',
-        iconUrl: 'ghost.png',
+        iconUrl: 'frog.png',
         title: 'Hey You!',
         message: 'This can be made to bug you forever!',
         isClickable: false

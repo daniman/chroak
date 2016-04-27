@@ -1,44 +1,34 @@
 <!doctype html>
 <html>
   <head>
+    <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="style.css">
     <script src="app.js"></script>
-    <style>
-      body {
-        padding: 50px;
-      }
-
-      .info {
-        font-weight: bold;
-      }
-
-      #copy-text {
-        opacity: 0;
-        width: 1px;
-        cursor: default;
-      }
-
-      #copied-text {
-        font-style: italic;
-      }
-    </style>
     <script src="background.js"></script>
   </head>
   <body>
-    <div>
-      <h1>Well, hello there.</h1>
-      <div><button id="toggle-notifications"></button></div>
-      <div><button id="huge-font"></button></div>
+    <div class="app-container">
+      <h1>Well, <span class="b">h</span><span class="r">e</span><span class="y">l</span><span class="b">l</span><span class="g">o</span> there.</h1>
+      <div>This is <a target="_blank" href="https://www.github.com/daniman/chroak">Chroak</a>, a Chrome Extension that educates you about the power of extensions. Built with love by some MIT students for a computer security <a target="_blank" href="http://courses.csail.mit.edu/6.857/2016/">class</a>.</div>
+
       <div>
-        <button id="clipboard-copy">Copy Text to Clipboard</button>
-        <input id="copy-text" type="text" value="hello world">
-        <span id="copied-text"></span>
+        <h2>Here are some actions you can take:</h2>
+        <div>
+          <button id="toggle-notifications"></button>
+          <button id="huge-font"></button>
+          <button id="clipboard-copy">Copy Arbitrary Text to Clipboard</button><input id="copy-text" type="text" value="hello world">
+        </div>
       </div>
-      <ul>
-        <li>You have <span id="tabs-number" class="info"></span> tabs open in <span id="windows-number" class="info"></span> different windows.</li>
-        <li>You have a <span id="cpu-model" class="info"></span> and are running <span id="num-processors" class="info"></span> processors with <span id="cpu-arch" class="info"></span> architecture.</li>
-        <li>You have <span id="num-display" class="info"></span> display(s) running.</li>
-        <li>You have <span id="num-devices" class="info"></span> other device(s) connected to Chrome. <span id="devices" class="info"></span></li>
-      </ul>
+
+      <div>
+        <h2>Here are some things your extension knows:</h2>
+        <ul>
+          <li>You have <span id="tabs-number" class="info"></span> tabs open in <span id="windows-number" class="info"></span> different windows.</li>
+          <li>You have a <span id="cpu-model" class="info"></span> and are running <span id="num-processors" class="info"></span> processors with <span id="cpu-arch" class="info"></span> architecture.</li>
+          <li>You have <span id="num-display" class="info"></span> display(s) running.</li>
+          <li>You have <span id="num-devices" class="info"></span> other device(s) connected to Chrome. <span id="devices" class="info"></span></li>
+        </ul>
+      </div>
     </div>
   </body>
 </html>

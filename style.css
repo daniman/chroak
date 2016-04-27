@@ -1,0 +1,71 @@
+.app-container {
+  max-width: 800px;
+  margin: 50px auto 20px auto;
+  padding: 0 50px;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+}
+
+a {
+  text-decoration: none;
+  color: #4885ed;
+}
+
+h1 {
+  margin-bottom: 0px;
+  font-size: 50px;
+  margin-top: 0px;
+  font-family: 'Product Sans', Arial, sans-serif;
+}
+
+h2 {
+  margin-bottom: 5px;
+  margin-top: 30px;
+}
+
+ul {
+  margin-top: 0px;
+  padding-left: 20px;
+}
+
+.b {
+  color: #4885ed;
+}
+.r {
+  color: #db3236;
+}
+.y {
+  color: #f4c20d;
+}
+.g {
+  color: #3cba54;
+}
+
+button {
+  border: 0px;
+  outline: none;
+  border-radius: 5px;
+  margin-right: 5px;
+  background-color: #555;
+  padding: 10px;
+  font-size: 100%;
+  color: #fff;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #777;
+}
+
+.info {
+  font-weight: bold;
+}
+
+#copy-text {
+  opacity: 0;
+  width: 1px;
+  cursor: default;
+}

@@ -1,3 +1,8 @@
+var red = '#db3236';
+var blue = '#4885ed';
+var green = '#3cba54';
+var yellow = '#f4c20d';
+
 document.addEventListener('DOMContentLoaded', function() {
 
   /**
@@ -64,17 +69,20 @@ document.addEventListener('DOMContentLoaded', function() {
   } else {
     document.getElementById('huge-font').innerHTML = 'Restore Default Google Font';
     document.getElementsByTagName('body')[0].style.fontSize = '12px';
+    document.getElementById('huge-font').style.backgroundColor = red;
   }
   document.getElementById('huge-font').onclick = function(event) {
     if (!chrome.extension.getBackgroundPage().fontBool) {
       chrome.fontSettings.setDefaultFontSize({'pixelSize': 10000}, function() {});
       document.getElementsByTagName('body')[0].style.fontSize = '12px';
       chrome.extension.getBackgroundPage().fontBool = true;
-      this.innerHTML = 'Restore Default Google Font'
+      this.innerHTML = 'Restore Default Google Font';
+      document.getElementById('huge-font').style.backgroundColor = red;
     } else {
       chrome.fontSettings.clearDefaultFontSize({}, function() {});
       chrome.extension.getBackgroundPage().fontBool = false;
-      this.innerHTML = 'Make Google Font Huge'
+      this.innerHTML = 'Make Google Font Huge';
+      document.getElementById('huge-font').style.backgroundColor = "";
     }
   }
 
@@ -86,7 +94,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('copy-text').focus();
     document.execCommand('selectAll');
     document.execCommand("Copy", false, null);
-    document.getElementById('copied-text').innerHTML = 'The text "' + document.getElementById('copy-text').value + '" has been copied to your clipboard';
+    chrome.notifications.create('chroak', {
+        type: 'basic',
+        iconUrl: 'frog.png',
+        title: 'You\'ve Copied Text',
+        message: 'The text "' + document.getElementById('copy-text').value + '" has been copied to your clipboard.',
+        isClickable: false
+     }, function(notificationId) {});
   }
 
   /**
@@ -95,17 +109,20 @@ document.addEventListener('DOMContentLoaded', function() {
    * Toggles notifications bool in the background page.
    */
   if (chrome.extension.getBackgroundPage().notificationBool) {
-    document.getElementById('toggle-notifications').innerHTML = 'Hide Notifications'
+    document.getElementById('toggle-notifications').innerHTML = 'Hide Notifications';
+    document.getElementById('toggle-notifications').style.backgroundColor = red;
   } else {
-    document.getElementById('toggle-notifications').innerHTML = 'Show Notifications'
+    document.getElementById('toggle-notifications').innerHTML = 'Show Notifications';
   }
   document.getElementById('toggle-notifications').onclick = function(event) {
     if (!chrome.extension.getBackgroundPage().notificationBool) {
       chrome.extension.getBackgroundPage().notificationBool = true;
+      document.getElementById('toggle-notifications').style.backgroundColor = red;
       this.innerHTML = 'Hide Notifications'
       chrome.extension.getBackgroundPage().createNotification();
     } else {
       chrome.extension.getBackgroundPage().notificationBool = false;
+      document.getElementById('toggle-notifications').style.backgroundColor = "";
       this.innerHTML = 'Show Notifications'
       chrome.notifications.clear('chroak', function() {});
     }
