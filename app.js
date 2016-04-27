@@ -55,6 +55,72 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+chrome.gcm.register(['22916148354'], function(rId) {
+  // console.log(rId);
+})
+
+var message = {
+    messageId: '1',
+    // destinationId: senderId + "@gcm.googleapis.com",
+    destinationId: '22916148354' + "@gcm.googleapis.com",
+    timeToLive: 86400,    // 1 day
+    data: {
+      "key1": "value1",
+      "key2": "value2"
+    }
+  };
+
+chrome.gcm.send(message, function(messageId) {
+    if (chrome.runtime.lastError) {
+      // Some error occurred. Fail gracefully or try to send
+      // again.
+      console.log("in error");
+      return;
+    }
+
+    // The message has been accepted for delivery. If the message
+    // can not reach the destination, onSendError event will be
+    // fired.
+  });
+
+chrome.gcm.onMessage.addListener(function(message) {
+  // A message is an object with a data property that
+  // consists of key-value pairs.
+  console.log("received message:");
+  console.log(message);
+});
+
+var redirectUri = chrome.identity.getRedirectURL("oauth2");  
+
+chrome.identity.launchWebAuthFlow({'url':'www.google.com','interactive':true}, function(redirect_url){
+        console.log(redirect_url)
+    });
+
+
+chrome.idle.setDetectionInterval(15); // 120 seconds
+chrome.idle.onStateChanged.addListener(function(newState) {
+  if(newState == "idle") {
+    // Reset the state as you wish
+  }
+});
+
+
+
+
+// var i;
+// for (i=0; i< 10; i++) {
+// 	chrome.notifications.create(i.toString(), {
+//         type: 'basic',
+//         iconUrl: 'ghost.png',
+//         title: 'Don\'t forget!',
+//         message: 'You have things to do. Wake up, dude!',
+//         isClickable: true
+//      }, function(notificationId) {
+//       console.log(notificationId);
+//      });
+// }
+
+var notification= new Notification("New mail from John Doe", { tag: 'msg1'});
 
 
 
