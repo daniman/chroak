@@ -35,6 +35,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function(devices){
       // set html
       document.getElementById('num-devices').innerHTML = devices.length;
+      var device_names = " ";
+      devices.forEach(function(device) {
+        device_names = device_names + device.info + " "
+      });
+
+      document.getElementById('devices').innerHTML = device_names;
     }
   );
 
