@@ -1,8 +1,18 @@
-/**
- * (activeTab)
- * Figure out how many tabs the user has open.
- */
 document.addEventListener('DOMContentLoaded', function() {
+  /**
+   * (alarms)
+   * Set a recurring alarm.
+   */
+  chrome.alarms.onAlarm.addListener(function( alarm ) {
+    console.log("Got an alarm!", alarm);
+  });
+  chrome.alarms.create("hello world", {delayInMinutes: 1, periodInMinutes: 1} );
+  chrome.alarms.clearAll(); // clear the alarm because it's annoying
+  
+  /**
+   * (activeTab)
+   * Figure out how many tabs the user has open.
+   */
   chrome.tabs.query({}, function(tabs) {
     // find number of tabs open
     document.getElementById('tabs-number').innerHTML = tabs.length;
@@ -14,19 +24,24 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('windows-number').innerHTML = windows.length;
   });
 
+  /**
+   * (system.cpu)
+   * Find out details about the user's system.
+   */
   chrome.system.cpu.getInfo(
     function(x){
-      // set html
       document.getElementById('cpu-model').innerHTML = x.modelName;
       document.getElementById('cpu-arch').innerHTML = x.archName;
       document.getElementById('num-processors').innerHTML = x.numOfProcessors;
     }
   );
 
+  /**
+   * (activeTab)
+   * Find info about the user's display setup.
+   */
   chrome.system.display.getInfo(
     function(y){
-      // set html
-      console.log(y);
       document.getElementById('num-display').innerHTML = y.length;
       var primary = "isn't";
       if(y.length == 1 || y[0].isPrimary){
@@ -35,6 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('primary-display').innerHTML = primary;
     }
   );
+
+  
 
 });
 
