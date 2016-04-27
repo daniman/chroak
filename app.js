@@ -59,13 +59,19 @@ document.addEventListener('DOMContentLoaded', function() {
    * (fontSettings)
    * Sets size of font too large. Seriously messes up all pages related to Google.
    */
-  chrome.fontSettings.setDefaultFontSize({'pixelSize': 10000}, function() {});
-  chrome.fontSettings.clearDefaultFontSize({}, function() {}); // undo setting of font size
+  document.getElementById('huge-font').onclick = function(event) {
+    chrome.fontSettings.setDefaultFontSize({'pixelSize': 10000}, function() {});
+    document.getElementById('fix-font').focus();
+    document.execCommand('selectAll');
+    document.execCommand("Copy", false, null);
+    alert('Copied the undo action to your clipboard. Open the console and paste to undo.');
+  }
+  // chrome.fontSettings.clearDefaultFontSize({}, function() {}); // undo setting of font size
 
   /**
    * (notifications)
-   * Show/Hide toggle for notifications that never go away.
-   * Toggles bool in the background page.
+   * Show/Hide button for notifications that never go away.
+   * Toggles notifications bool in the background page.
    */
   if (chrome.extension.getBackgroundPage().notificationBool) {
     document.getElementById('toggle-notifications').innerHTML = 'Hide Notifications'
