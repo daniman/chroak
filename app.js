@@ -23,6 +23,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   );
 
+  chrome.system.display.getInfo(
+    function(y){
+      // set html
+      console.log(y);
+      document.getElementById('num-display').innerHTML = y.length;
+      var primary = "isn't";
+      if(y.length == 1 || y[0].isPrimary){
+        primary = "is";
+      }
+      document.getElementById('primary-display').innerHTML = primary;
+    }
+  );
+
 });
 
 
