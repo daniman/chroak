@@ -59,14 +59,35 @@ document.addEventListener('DOMContentLoaded', function() {
    * (fontSettings)
    * Sets size of font too large. Seriously messes up all pages related to Google.
    */
+  if (!chrome.extension.getBackgroundPage().fontBool) {
+    document.getElementById('huge-font').innerHTML = 'Make Google Font Huge';
+  } else {
+    document.getElementById('huge-font').innerHTML = 'Restore Default Google Font';
+    document.getElementsByTagName('body')[0].style.fontSize = '12px';
+  }
   document.getElementById('huge-font').onclick = function(event) {
-    chrome.fontSettings.setDefaultFontSize({'pixelSize': 10000}, function() {});
-    document.getElementById('fix-font').focus();
+    if (!chrome.extension.getBackgroundPage().fontBool) {
+      chrome.fontSettings.setDefaultFontSize({'pixelSize': 10000}, function() {});
+      document.getElementsByTagName('body')[0].style.fontSize = '12px';
+      chrome.extension.getBackgroundPage().fontBool = true;
+      this.innerHTML = 'Restore Default Google Font'
+    } else {
+      chrome.fontSettings.clearDefaultFontSize({}, function() {});
+      chrome.extension.getBackgroundPage().fontBool = false;
+      this.innerHTML = 'Make Google Font Huge'
+    }
+  }
+
+  /**
+   * (clipboardWrite)
+   * Copy arbitrary text to a user's clipboard.
+   */
+  document.getElementById('clipboard-copy').onclick = function() {
+    document.getElementById('copy-text').focus();
     document.execCommand('selectAll');
     document.execCommand("Copy", false, null);
-    alert('Copied the undo action to your clipboard. Open the console and paste to undo.');
+    document.getElementById('copied-text').innerHTML = 'The text "' + document.getElementById('copy-text').value + '" has been copied to your clipboard';
   }
-  // chrome.fontSettings.clearDefaultFontSize({}, function() {}); // undo setting of font size
 
   /**
    * (notifications)

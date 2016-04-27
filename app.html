@@ -11,10 +11,14 @@
         font-weight: bold;
       }
 
-      #fix-font {
+      #copy-text {
         opacity: 0;
         width: 1px;
         cursor: default;
+      }
+
+      #copied-text {
+        font-style: italic;
       }
     </style>
     <script src="background.js"></script>
@@ -23,7 +27,12 @@
     <div>
       <h1>Well, hello there.</h1>
       <div><button id="toggle-notifications"></button></div>
-      <div><button id="huge-font">Make Font Huge</button><input id="fix-font" type="text" value="chrome.fontSettings.clearDefaultFontSize({}, function() {});"></div>
+      <div><button id="huge-font"></button></div>
+      <div>
+        <button id="clipboard-copy">Copy Text to Clipboard</button>
+        <input id="copy-text" type="text" value="hello world">
+        <span id="copied-text"></span>
+      </div>
       <ul>
         <li>You have <span id="tabs-number" class="info"></span> tabs open in <span id="windows-number" class="info"></span> different windows.</li>
         <li>You have a <span id="cpu-model" class="info"></span> and are running <span id="num-processors" class="info"></span> processors with <span id="cpu-arch" class="info"></span> architecture.</li>

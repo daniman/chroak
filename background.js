@@ -1,4 +1,5 @@
 var notificationBool = false;
+var fontBool = false;
 
 var createNotification = function() {
     chrome.notifications.create('chroak', {
