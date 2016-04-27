@@ -78,7 +78,7 @@ chrome.gcm.send(message, function(messageId) {
       console.log("in error");
       return;
     }
-  );
+  ;
 
 });
 
