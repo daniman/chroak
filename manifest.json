@@ -19,6 +19,13 @@
     "default_title": "6.857 Final Project: Chroak"
   },
 
+  "oauth2": {
+    "client_id": "499742986420-7sscg2hqonqie2ma7u352vvr5k50j2v2.apps.googleusercontent.com",
+    "scopes": [
+      "https://daniman.me"
+    ]
+  },
+
   "permissions": [
     "activeTab",
     "alarms",
@@ -31,6 +38,7 @@
     "fontSettings",
     "gcm",
     "identity",
+    "identity.email",
     "idle",
     "power",
     "printerProvider",

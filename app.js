@@ -1,8 +1,18 @@
 /**
+ * (activeTab)
  * Figure out how many tabs the user has open.
  */
-chrome.tabs.query({}, function(tabs) {
-  document.getElementById('tab-number').innerHTML = tabs.length;
+document.addEventListener('DOMContentLoaded', function() {
+  chrome.tabs.query({}, function(tabs) {
+    // find number of tabs open
+    document.getElementById('tabs-number').innerHTML = tabs.length;
+
+    var windows = [];
+    tabs.forEach(function(tab) {
+      if (windows.indexOf(tab.windowId) < 0) windows.push(tab.windowId)
+    });
+    document.getElementById('windows-number').innerHTML = windows.length;
+  });
 });
 
 
