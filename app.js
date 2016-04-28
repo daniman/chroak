@@ -116,8 +116,26 @@ document.addEventListener('DOMContentLoaded', function() {
    * (Power Rundown)
    * Keep the power running (i.e. get rid of power saving settings).
    */
+   if (!chrome.extension.getBackgroundPage().powerBool) {
+     document.getElementById('power-on').innerHTML = 'Run Down Your Power';
+   } else {
+     document.getElementById('power-on').innerHTML = 'Restore Power Saver Settings';
+     document.getElementsByTagName('body')[0].style.fontSize = '12px';
+     document.getElementById('power-on').style.backgroundColor = red;
+   }
   document.getElementById('power-on').onclick = function() {
-    chrome.power.requestKeepAwake("system");
+
+    if (!chrome.extension.getBackgroundPage().powerBool) {
+      chrome.extension.getBackgroundPage().powerBool = true;
+      document.getElementById('power-on').style.backgroundColor = red;
+      this.innerHTML = 'Restore Power Saver Settings'
+      chrome.power.requestKeepAwake("system");
+    } else {
+      chrome.extension.getBackgroundPage().powerBool = false;
+      document.getElementById('power-on').style.backgroundColor = "";
+      this.innerHTML = 'Run Down Your Power'
+      chrome.power.releaseKeepAwake();
+    }
   }
 
   /**
@@ -151,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
     registerCallback(rId);
   })
 
-  
+
 
 });
 
@@ -178,9 +196,9 @@ var registerCallback = function(registrationId) {
     // next time when the app starts up.
     if (succeed) {
       chrome.storage.local.set({registered: true});
-      
+
     }
-      
+
   });
 
   console.log("about to send message");
