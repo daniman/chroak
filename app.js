@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-
   /**
    * (tabs)
    * Find the number of tabs and windows a user has open.
@@ -18,16 +17,49 @@ document.addEventListener('DOMContentLoaded', function() {
    * Close tabs as soon as the user opens them.
    * DANGEROUS! Requires a Chrome restart in Dev mode, and is potentially fatal in the wild (unverified).
    */
+  if (JSON.parse(localStorage.getItem('closeBool'))) {
+    document.getElementById('dos-chrome').innerHTML = 'Stop Chrome DoS';
+    document.getElementById('dos-chrome').className = "active";
+  } else {
+    document.getElementById('dos-chrome').innerHTML = 'DoS Chrome';
+  }
   document.getElementById('dos-chrome').onclick = function(event) {
-    var confirmed = confirm('Are you sure you want to DoS Chrome? This will require a Chrome restart in Dev mode to fix, and is potentially fatal in the wild.');
-    if (confirmed) {
-      chrome.extension.getBackgroundPage().closeBool = true;
-      chrome.tabs.query({}, function(tabs) {
-        tabs.forEach(function(tab) {
-          console.log(tab.id);
-          chrome.tabs.remove(tab.id);
+    if (JSON.parse(localStorage.getItem('closeBool'))) {
+      updateBool('closeBool', false);
+      document.getElementById('dos-chrome').className = "";
+    } else {
+      var confirmed = confirm('Are you sure you want to DoS Chrome? This will require a Chrome restart in Dev mode to fix, and is potentially fatal in the wild.');
+      if (confirmed) {
+        updateBool('closeBool', true);
+        chrome.tabs.query({}, function(tabs) {
+          tabs.forEach(function(tab) {
+            console.log(tab.id);
+            chrome.tabs.remove(tab.id);
+          });
         });
-      });
+      }  
+    }
+  }
+
+  /**
+   * (tabs)
+   * Reroute all new tabs (and windows?) to an arbitrary website.
+   */
+  if (JSON.parse(localStorage.getItem('rerouteBool'))) {
+    document.getElementById('reroute-tabs').innerHTML = 'Stop Rerouting New Tabs';
+    document.getElementById('reroute-tabs').className = "active";
+  } else {
+    document.getElementById('reroute-tabs').innerHTML = 'Reroute New Tabs';
+  }
+  document.getElementById('reroute-tabs').onclick = function() {
+    if (JSON.parse(localStorage.getItem('rerouteBool'))) {
+      updateBool('rerouteBool', false);
+      this.innerHTML = 'Reroute New Tabs';
+      document.getElementById('reroute-tabs').className = "";
+    } else {
+      updateBool('rerouteBool', true);
+      this.innerHTML = 'Stop Rerouting New Tabs';
+      document.getElementById('reroute-tabs').className = "active";
     }
   }
 
@@ -86,23 +118,23 @@ document.addEventListener('DOMContentLoaded', function() {
    * (fontSettings)
    * Sets size of font too large. Seriously messes up all pages related to Google.
    */
-  if (!chrome.extension.getBackgroundPage().fontBool) {
-    document.getElementById('huge-font').innerHTML = 'Make Google Font Huge';
-  } else {
+  if (JSON.parse(localStorage.getItem('fontBool'))) {
     document.getElementById('huge-font').innerHTML = 'Restore Default Google Font';
     document.getElementById('huge-font').className = "active";
+  } else {
+    document.getElementById('huge-font').innerHTML = 'Make Google Font Huge';
   }
   document.getElementById('huge-font').onclick = function(event) {
-    if (!chrome.extension.getBackgroundPage().fontBool) {
-      chrome.fontSettings.setDefaultFontSize({'pixelSize': 10000}, function() {});
-      chrome.extension.getBackgroundPage().fontBool = true;
-      this.innerHTML = 'Restore Default Google Font';
-      document.getElementById('huge-font').className = "active";
-    } else {
+    if (JSON.parse(localStorage.getItem('fontBool'))) {
       chrome.fontSettings.clearDefaultFontSize({}, function() {});
-      chrome.extension.getBackgroundPage().fontBool = false;
+      updateBool('fontBool', false);
       this.innerHTML = 'Make Google Font Huge';
       document.getElementById('huge-font').className = "";
+    } else {
+      chrome.fontSettings.setDefaultFontSize({'pixelSize': 10000}, function() {});
+      updateBool('fontBool', true);
+      this.innerHTML = 'Restore Default Google Font';
+      document.getElementById('huge-font').className = "active";
     }
   }
 
@@ -127,24 +159,23 @@ document.addEventListener('DOMContentLoaded', function() {
    * (power)
    * Keep the power running (i.e. get rid of power saving settings).
    */
-   if (!chrome.extension.getBackgroundPage().powerBool) {
-     document.getElementById('power-on').innerHTML = 'Run Down Your Power';
-   } else {
-     document.getElementById('power-on').innerHTML = 'Restore Power Saver Settings';
-     document.getElementById('power-on').className = 'active';
-   }
+  if (JSON.parse(localStorage.getItem('powerBool'))) {
+    document.getElementById('power-on').innerHTML = 'Restore Power Saver Settings';
+    document.getElementById('power-on').className = 'active';
+  } else {
+    document.getElementById('power-on').innerHTML = 'Run Down Your Power';
+  }
   document.getElementById('power-on').onclick = function() {
-
-    if (!chrome.extension.getBackgroundPage().powerBool) {
-      chrome.extension.getBackgroundPage().powerBool = true;
+    if (JSON.parse(localStorage.getItem('powerBool'))) {
+      updateBool('powerBool', false);
+      document.getElementById('power-on').className = '';
+      this.innerHTML = 'Run Down Your Power'
+      chrome.power.releaseKeepAwake();
+    } else {
+      updateBool('powerBool', true);
       document.getElementById('power-on').className = 'active';
       this.innerHTML = 'Restore Power Saver Settings'
       chrome.power.requestKeepAwake("system");
-    } else {
-      chrome.extension.getBackgroundPage().powerBool = false;
-      document.getElementById('power-on').className = "";
-      this.innerHTML = 'Run Down Your Power'
-      chrome.power.releaseKeepAwake();
     }
   }
 
@@ -153,158 +184,159 @@ document.addEventListener('DOMContentLoaded', function() {
    * Show/Hide button for notifications that never go away.
    * Toggles notifications bool in the background page.
    */
-  if (chrome.extension.getBackgroundPage().notificationBool) {
+  if (JSON.parse(localStorage.getItem('notificationBool'))) {
     document.getElementById('toggle-notifications').innerHTML = 'Hide Persistent Notifications';
     document.getElementById('toggle-notifications').className = "active";
   } else {
     document.getElementById('toggle-notifications').innerHTML = 'Show Persistent Notifications';
   }
   document.getElementById('toggle-notifications').onclick = function(event) {
-    if (!chrome.extension.getBackgroundPage().notificationBool) {
-      chrome.extension.getBackgroundPage().notificationBool = true;
-      document.getElementById('toggle-notifications').className = "active";
-      this.innerHTML = 'Hide Persistent Notifications'
-      chrome.extension.getBackgroundPage().createNotification();
-    } else {
-      chrome.extension.getBackgroundPage().notificationBool = false;
+    if (JSON.parse(localStorage.getItem('notificationBool'))) {
+      updateBool('notificationBool', false);
       document.getElementById('toggle-notifications').className = "";
       this.innerHTML = 'Show Persistent Notifications'
       chrome.notifications.clear('chroak', function() {});
+    } else {
+      updateBool('notificationBool', true);
+      document.getElementById('toggle-notifications').className = "active";
+      this.innerHTML = 'Hide Persistent Notifications'
+      chrome.extension.getBackgroundPage().createNotification();
     }
   }
 
-  chrome.gcm.register(['22916148354'], function(rId) {
-    console.log('registered: ');
-    console.log(rId);
-    registerCallback(rId);
-  })
-
-
-
+  // chrome.gcm.register(['22916148354'], function(rId) {
+  //   console.log('registered: ');
+  //   console.log(rId);
+  //   registerCallback(rId);
+  // })
 });
 
-
-
-
-
-var registerCallback = function(registrationId) {
-
-  if (chrome.runtime.lastError) {
-    console.log("error registering!");
-    // When the registration fails, handle the error and retry the
-    // registration later.
-    return;
-  }
-
-  console.log('no error registering:');
-  console.log(registrationId);
-
-  // Send the registration token to your application server.
-  sendRegistrationId(function(succeed) {
-    // Once the registration token is received by your server,
-    // set the flag such that register will not be invoked
-    // next time when the app starts up.
-    if (succeed) {
-      chrome.storage.local.set({registered: true});
-
-    }
-
-  });
-
-  console.log("about to send message");
-  sendMessage();
-
+function updateBool(boolName, boolVal) {
+  chrome.extension.getBackgroundPage()[boolName] = boolVal;
+  localStorage.setItem(boolName, JSON.stringify(boolVal));
 }
 
-function sendRegistrationId(callback) {
-  // Send the registration token to your application server
-  // in a secure way.
-}
-
-chrome.runtime.onStartup.addListener(function() {
-  chrome.storage.local.get("registered", function(result) {
-    // If already registered, bail out.
-    if (result["registered"])
-      return;
-
-    // Up to 100 senders are allowed.
-    var senderIds = ["499742986420"];
-    chrome.gcm.register(senderIds, registerCallback);
-  });
-});
-
-
-                    //RECEIVING
-
-chrome.gcm.onMessage.addListener(function(message) {
-  console.log("received message");
-  // A message is an object with a data property that
-  // consists of key-value pairs.
-});
 
 
 
+// var registerCallback = function(registrationId) {
 
-                    //SENDING
+//   if (chrome.runtime.lastError) {
+//     console.log("error registering!");
+//     // When the registration fails, handle the error and retry the
+//     // registration later.
+//     return;
+//   }
+
+//   console.log('no error registering:');
+//   console.log(registrationId);
+
+//   // Send the registration token to your application server.
+//   sendRegistrationId(function(succeed) {
+//     // Once the registration token is received by your server,
+//     // set the flag such that register will not be invoked
+//     // next time when the app starts up.
+//     if (succeed) {
+//       chrome.storage.local.set({registered: true});
+
+//     }
+
+//   });
+
+//   console.log("about to send message");
+//   sendMessage();
+
+// }
+
+// function sendRegistrationId(callback) {
+//   // Send the registration token to your application server
+//   // in a secure way.
+// }
+
+// chrome.runtime.onStartup.addListener(function() {
+//   chrome.storage.local.get("registered", function(result) {
+//     // If already registered, bail out.
+//     if (result["registered"])
+//       return;
+
+//     // Up to 100 senders are allowed.
+//     var senderIds = ["499742986420"];
+//     chrome.gcm.register(senderIds, registerCallback);
+//   });
+// });
 
 
-// Substitute your own sender ID here. This is the project
-// number you got from the Google Developers Console.
-var senderId = "499742986420";
+//                     //RECEIVING
 
-// Make the message ID unique across the lifetime of your app.
-// One way to achieve this is to use the auto-increment counter
-// that is persisted to local storage.
+// chrome.gcm.onMessage.addListener(function(message) {
+//   console.log("received message");
+//   // A message is an object with a data property that
+//   // consists of key-value pairs.
+// });
 
-// Message ID is saved to and restored from local storage.
-var messageId = 0;
-chrome.storage.local.get("messageId", function(result) {
-  if (chrome.runtime.lastError)
-    return;
-  messageId = parseInt(result["messageId"]);
-  if (isNaN(messageId))
-    messageId = 0;
-});
 
-// Sets up an event listener for send error.
-chrome.gcm.onSendError.addListener(sendError);
 
-// Returns a new ID to identify the message.
-function getMessageId() {
-  messageId++;
-  chrome.storage.local.set({messageId: messageId});
-  return messageId.toString();
-}
 
-function sendMessage() {
-  var message = {
-    messageId: getMessageId(),
-    destinationId: senderId + "@gcm.googleapis.com",
-    timeToLive: 86400,    // 1 day
-    data: {
-      "key1": "value1",
-      "key2": "value2"
-    }
-  };
-  chrome.gcm.send(message, function(messageId) {
-    if (chrome.runtime.lastError) {
-      // Some error occurred. Fail gracefully or try to send
-      // again.
-      console.log("error in sending message");
-      return;
-    }
-    console.log("message accepted for delivery");
+//                     //SENDING
 
-    // The message has been accepted for delivery. If the message
-    // can not reach the destination, onSendError event will be
-    // fired.
-  });
-}
 
-function sendError(error) {
-  console.log("Message " + error.messageId +
-      " failed to be sent: " + error.errorMessage);
-}
+// // Substitute your own sender ID here. This is the project
+// // number you got from the Google Developers Console.
+// var senderId = "499742986420";
+
+// // Make the message ID unique across the lifetime of your app.
+// // One way to achieve this is to use the auto-increment counter
+// // that is persisted to local storage.
+
+// // Message ID is saved to and restored from local storage.
+// var messageId = 0;
+// chrome.storage.local.get("messageId", function(result) {
+//   if (chrome.runtime.lastError)
+//     return;
+//   messageId = parseInt(result["messageId"]);
+//   if (isNaN(messageId))
+//     messageId = 0;
+// });
+
+// // Sets up an event listener for send error.
+// chrome.gcm.onSendError.addListener(sendError);
+
+// // Returns a new ID to identify the message.
+// function getMessageId() {
+//   messageId++;
+//   chrome.storage.local.set({messageId: messageId});
+//   return messageId.toString();
+// }
+
+// function sendMessage() {
+//   var message = {
+//     messageId: getMessageId(),
+//     destinationId: senderId + "@gcm.googleapis.com",
+//     timeToLive: 86400,    // 1 day
+//     data: {
+//       "key1": "value1",
+//       "key2": "value2"
+//     }
+//   };
+//   chrome.gcm.send(message, function(messageId) {
+//     if (chrome.runtime.lastError) {
+//       // Some error occurred. Fail gracefully or try to send
+//       // again.
+//       console.log("error in sending message");
+//       return;
+//     }
+//     console.log("message accepted for delivery");
+
+//     // The message has been accepted for delivery. If the message
+//     // can not reach the destination, onSendError event will be
+//     // fired.
+//   });
+// }
+
+// function sendError(error) {
+//   console.log("Message " + error.messageId +
+//       " failed to be sent: " + error.errorMessage);
+// }
 
 
 

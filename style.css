@@ -2,16 +2,17 @@
   max-width: 900px;
   margin: 0px auto;
   padding: 1px 50px 20px;
-  min-height: calc(100% - 55px - 137px);
+  min-height: calc(100% - 55px);
 }
 
 #header {
-  margin: 0 auto;
-  padding: 50px 50px 10px;
-  max-width: 900px;
+  padding: 50px 50px 20px 50px;
+  margin: 0 -50px;
+  // padding: 50px 50px 10px;
+  // max-width: 900px;
   // height: 55px;
   border-bottom: 1px solid #eee;
-  height: 137px;
+  // height: 137px;
 }
 
 #footer {
@@ -48,7 +49,8 @@ a {
 }
 
 h1 {
-  margin-bottom: 0px;
+  line-height: 40px;
+  margin-bottom: 15px;
   font-size: 50px;
   margin-top: 0px;
   font-family: 'Product Sans', Arial, sans-serif;
@@ -116,6 +118,9 @@ button.dangerous {
 
 #copy-text {
   opacity: 0;
-  width: 1px;
+  width: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
   cursor: default;
 }
