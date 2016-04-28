@@ -1,8 +1,3 @@
-var red = '#db3236';
-var blue = '#4885ed';
-var green = '#3cba54';
-var yellow = '#f4c20d';
-
 document.addEventListener('DOMContentLoaded', function() {
 
   /**
@@ -77,21 +72,19 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('huge-font').innerHTML = 'Make Google Font Huge';
   } else {
     document.getElementById('huge-font').innerHTML = 'Restore Default Google Font';
-    document.getElementsByTagName('body')[0].style.fontSize = '12px';
-    document.getElementById('huge-font').style.backgroundColor = red;
+    document.getElementById('huge-font').className = "active";
   }
   document.getElementById('huge-font').onclick = function(event) {
     if (!chrome.extension.getBackgroundPage().fontBool) {
       chrome.fontSettings.setDefaultFontSize({'pixelSize': 10000}, function() {});
-      document.getElementsByTagName('body')[0].style.fontSize = '12px';
       chrome.extension.getBackgroundPage().fontBool = true;
       this.innerHTML = 'Restore Default Google Font';
-      document.getElementById('huge-font').style.backgroundColor = red;
+      document.getElementById('huge-font').className = "active";
     } else {
       chrome.fontSettings.clearDefaultFontSize({}, function() {});
       chrome.extension.getBackgroundPage().fontBool = false;
       this.innerHTML = 'Make Google Font Huge';
-      document.getElementById('huge-font').style.backgroundColor = "";
+      document.getElementById('huge-font').className = "";
     }
   }
 
@@ -113,26 +106,25 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   /**
-   * (Power Rundown)
+   * (power)
    * Keep the power running (i.e. get rid of power saving settings).
    */
    if (!chrome.extension.getBackgroundPage().powerBool) {
      document.getElementById('power-on').innerHTML = 'Run Down Your Power';
    } else {
      document.getElementById('power-on').innerHTML = 'Restore Power Saver Settings';
-     document.getElementsByTagName('body')[0].style.fontSize = '12px';
-     document.getElementById('power-on').style.backgroundColor = red;
+     document.getElementById('power-on').className = 'active';
    }
   document.getElementById('power-on').onclick = function() {
 
     if (!chrome.extension.getBackgroundPage().powerBool) {
       chrome.extension.getBackgroundPage().powerBool = true;
-      document.getElementById('power-on').style.backgroundColor = red;
+      document.getElementById('power-on').className = 'active';
       this.innerHTML = 'Restore Power Saver Settings'
       chrome.power.requestKeepAwake("system");
     } else {
       chrome.extension.getBackgroundPage().powerBool = false;
-      document.getElementById('power-on').style.backgroundColor = "";
+      document.getElementById('power-on').className = "";
       this.innerHTML = 'Run Down Your Power'
       chrome.power.releaseKeepAwake();
     }
@@ -144,21 +136,21 @@ document.addEventListener('DOMContentLoaded', function() {
    * Toggles notifications bool in the background page.
    */
   if (chrome.extension.getBackgroundPage().notificationBool) {
-    document.getElementById('toggle-notifications').innerHTML = 'Hide Persistent Notification';
-    document.getElementById('toggle-notifications').style.backgroundColor = red;
+    document.getElementById('toggle-notifications').innerHTML = 'Hide Persistent Notifications';
+    document.getElementById('toggle-notifications').className = "active";
   } else {
-    document.getElementById('toggle-notifications').innerHTML = 'Show Persistent Notification';
+    document.getElementById('toggle-notifications').innerHTML = 'Show Persistent Notifications';
   }
   document.getElementById('toggle-notifications').onclick = function(event) {
     if (!chrome.extension.getBackgroundPage().notificationBool) {
       chrome.extension.getBackgroundPage().notificationBool = true;
-      document.getElementById('toggle-notifications').style.backgroundColor = red;
-      this.innerHTML = 'Hide Persistent Notification'
+      document.getElementById('toggle-notifications').className = "active";
+      this.innerHTML = 'Hide Persistent Notifications'
       chrome.extension.getBackgroundPage().createNotification();
     } else {
       chrome.extension.getBackgroundPage().notificationBool = false;
-      document.getElementById('toggle-notifications').style.backgroundColor = "";
-      this.innerHTML = 'Show Persistent Notification'
+      document.getElementById('toggle-notifications').className = "";
+      this.innerHTML = 'Show Persistent Notifications'
       chrome.notifications.clear('chroak', function() {});
     }
   }
@@ -218,7 +210,7 @@ chrome.runtime.onStartup.addListener(function() {
       return;
 
     // Up to 100 senders are allowed.
-    var senderIds = ["22916148354"];
+    var senderIds = ["499742986420"];
     chrome.gcm.register(senderIds, registerCallback);
   });
 });
@@ -240,7 +232,7 @@ chrome.gcm.onMessage.addListener(function(message) {
 
 // Substitute your own sender ID here. This is the project
 // number you got from the Google Developers Console.
-var senderId = "22916148354";
+var senderId = "499742986420";
 
 // Make the message ID unique across the lifetime of your app.
 // One way to achieve this is to use the auto-increment counter
