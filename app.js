@@ -61,6 +61,15 @@ document.addEventListener('DOMContentLoaded', function() {
   );
 
   /**
+  Doesn't work...confused, nothing get's logged...
+  **/
+  chrome.printerProvider.onPrintRequested.addListener(printCallback)
+  var printCallback = function(printJob)
+  {
+    console.log("hello");
+  };
+
+  /**
    * (fontSettings)
    * Sets size of font too large. Seriously messes up all pages related to Google.
    */
@@ -101,6 +110,14 @@ document.addEventListener('DOMContentLoaded', function() {
         message: 'The text "' + document.getElementById('copy-text').value + '" has been copied to your clipboard.',
         isClickable: false
      }, function(notificationId) {});
+  }
+
+  /**
+   * (Power Rundown)
+   * Keep the power running (i.e. get rid of power saving settings).
+   */
+  document.getElementById('power-on').onclick = function() {
+    chrome.power.requestKeepAwake("system");
   }
 
   /**
