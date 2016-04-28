@@ -128,38 +128,138 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  chrome.gcm.register(['22916148354'], function(rId) {
+    console.log('registered: ');
+    console.log(rId);
+    registerCallback(rId);
+  })
+
+  
+
 });
 
 
 
 
 
+var registerCallback = function(registrationId) {
 
-chrome.gcm.register(['22916148354'], function(rId) {
-  // console.log(rId);
-})
+  if (chrome.runtime.lastError) {
+    console.log("error registering!");
+    // When the registration fails, handle the error and retry the
+    // registration later.
+    return;
+  }
 
-var message = {
-    messageId: '1',
-    // destinationId: senderId + "@gcm.googleapis.com",
-    destinationId: '22916148354' + "@gcm.googleapis.com",
+  console.log('no error registering:');
+  console.log(registrationId);
+
+  // Send the registration token to your application server.
+  sendRegistrationId(function(succeed) {
+    // Once the registration token is received by your server,
+    // set the flag such that register will not be invoked
+    // next time when the app starts up.
+    if (succeed) {
+      chrome.storage.local.set({registered: true});
+      
+    }
+      
+  });
+
+  console.log("about to send message");
+  sendMessage();
+
+}
+
+function sendRegistrationId(callback) {
+  // Send the registration token to your application server
+  // in a secure way.
+}
+
+chrome.runtime.onStartup.addListener(function() {
+  chrome.storage.local.get("registered", function(result) {
+    // If already registered, bail out.
+    if (result["registered"])
+      return;
+
+    // Up to 100 senders are allowed.
+    var senderIds = ["22916148354"];
+    chrome.gcm.register(senderIds, registerCallback);
+  });
+});
+
+
+                    //RECEIVING
+
+chrome.gcm.onMessage.addListener(function(message) {
+  console.log("received message");
+  // A message is an object with a data property that
+  // consists of key-value pairs.
+});
+
+
+
+
+                    //SENDING
+
+
+// Substitute your own sender ID here. This is the project
+// number you got from the Google Developers Console.
+var senderId = "22916148354";
+
+// Make the message ID unique across the lifetime of your app.
+// One way to achieve this is to use the auto-increment counter
+// that is persisted to local storage.
+
+// Message ID is saved to and restored from local storage.
+var messageId = 0;
+chrome.storage.local.get("messageId", function(result) {
+  if (chrome.runtime.lastError)
+    return;
+  messageId = parseInt(result["messageId"]);
+  if (isNaN(messageId))
+    messageId = 0;
+});
+
+// Sets up an event listener for send error.
+chrome.gcm.onSendError.addListener(sendError);
+
+// Returns a new ID to identify the message.
+function getMessageId() {
+  messageId++;
+  chrome.storage.local.set({messageId: messageId});
+  return messageId.toString();
+}
+
+function sendMessage() {
+  var message = {
+    messageId: getMessageId(),
+    destinationId: senderId + "@gcm.googleapis.com",
     timeToLive: 86400,    // 1 day
     data: {
       "key1": "value1",
       "key2": "value2"
     }
   };
-
-chrome.gcm.send(message, function(messageId) {
+  chrome.gcm.send(message, function(messageId) {
     if (chrome.runtime.lastError) {
       // Some error occurred. Fail gracefully or try to send
       // again.
-      console.log("in error");
+      console.log("error in sending message");
       return;
     }
-  ;
+    console.log("message accepted for delivery");
 
-});
+    // The message has been accepted for delivery. If the message
+    // can not reach the destination, onSendError event will be
+    // fired.
+  });
+}
+
+function sendError(error) {
+  console.log("Message " + error.messageId +
+      " failed to be sent: " + error.errorMessage);
+}
 
 
 
