@@ -1,13 +1,44 @@
 .app-container {
-  max-width: 800px;
-  margin: 50px auto 20px auto;
-  padding: 0 50px;
+  max-width: 900px;
+  margin: 0px auto;
+  padding: 1px 50px 20px;
+  min-height: calc(100% - 55px - 137px);
+}
+
+#header {
+  margin: 0 auto;
+  padding: 50px 50px 10px;
+  max-width: 900px;
+  // height: 55px;
+  border-bottom: 1px solid #eee;
+  height: 137px;
+}
+
+#footer {
+  margin: 0 auto;
+  padding: 20px 50px;
+  max-width: 900px;
+  height: 55px;
+  border-top: 1px solid #eee;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 body {
   background-color: #fff;
   font-family: 'Roboto', Arial, sans-serif;
-  font-size: 12px;
+  font-size: 13px;
+  height: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 a {
@@ -53,7 +84,7 @@ button {
   background-color: #eee;
   border: 0px;
   padding: 10px;
-  font-size: 100%;
+  font-size: 12px;
   cursor: pointer;
   border-left: 5px solid #3cba54;
   transition: .5s;
