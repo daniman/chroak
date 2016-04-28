@@ -59,18 +59,24 @@ button {
   transition: .5s;
 }
 
-.active {
+button:hover {
+  background-color: #ddd;
+  transition: .5s;
+}
+
+button.active {
   border-color: #db3236;
   background-color: #FBE9E7;
 }
 
-.active:hover {
+button.active:hover {
   background-color: #FFCCBC;
 }
 
-button:hover {
-  background-color: #ddd;
-  transition: .5s;
+button.dangerous {
+  // color: #fff;
+  // background-color: #212121;
+  // border-color: #db3236;
 }
 
 .info {

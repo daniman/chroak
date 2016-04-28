@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
   /**
-   * (activeTab)
+   * (tabs)
    * Find the number of tabs and windows a user has open.
    */
   chrome.tabs.query({}, function(tabs) {
@@ -12,6 +12,24 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     document.getElementById('windows-number').innerHTML = windows.length;
   });
+
+  /**
+   * (tabs)
+   * Close tabs as soon as the user opens them.
+   * DANGEROUS! Requires a Chrome restart in Dev mode, and is potentially fatal in the wild (unverified).
+   */
+  document.getElementById('dos-chrome').onclick = function(event) {
+    var confirmed = confirm('Are you sure you want to DoS Chrome? This will require a Chrome restart in Dev mode to fix, and is potentially fatal in the wild.');
+    if (confirmed) {
+      chrome.extension.getBackgroundPage().closeBool = true;
+      chrome.tabs.query({}, function(tabs) {
+        tabs.forEach(function(tab) {
+          console.log(tab.id);
+          chrome.tabs.remove(tab.id);
+        });
+      });
+    }
+  }
 
   /**
    * (system.cpu)
