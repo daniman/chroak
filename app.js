@@ -219,11 +219,16 @@ document.addEventListener('DOMContentLoaded', function() {
   /*
    *(system.storage)
    */
+
+  var arrayStorageDeviceIds = [];
+
   chrome.system.storage.getInfo(function(info) {
     var numStorageDevices = info.length;
     var arrayDeviceNames = [];
     var arrayDeviceTypes = [];
     for(var i=0; i < numStorageDevices; i++) {
+      var info_id = info[i].id;
+      arrayStorageDeviceIds.push(info[i].id);
       var nameDevice = info[i].name;
       arrayDeviceNames.push(nameDevice);
       arrayDeviceTypes.push(info[i].type);
@@ -233,7 +238,38 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("nameStorageDevices").innerHTML = nameStorageDevices;
     document.getElementById("numStorageDevices").innerHTML = numStorageDevices;
     document.getElementById("typeStorageDevices").innerHTML = typeStorageDevices;
+
+
+
+    // for(var i=0; i<arrayStorageDeviceIds.length; i++) {
+    //   console.log("ejecting");
+    //   chrome.system.storage.ejectDevice(arrayStorageDeviceIds[i].toString(), function(result) {
+    //     console.log(result);
+    //   })
+    // }
+
+
+
   })
+
+  chrome.system.storage.onAttached.addListener(function(info) {
+    // console.log(info);
+    var device_name = info.name;
+    var device_storage = info.capacity;
+    var ul = document.getElementById('knowledge-list');
+    var li = "<li>You have connected a storage device with the name <span class='info'>" + device_name + "</span> and capacity <span class='info'>" + device_storage + "</span></li>.";
+    // ul.appendChild(li);
+    ul.innerHTML = ul.innerHTML + li;
+    document.getElementById("device_name") = device_name;
+    document.getElementById("device_storage") = device_storage;
+  })
+
+  chrome.system.storage.onDetached.addListener(function(id) {
+    // console.log(id);
+  })
+
+  
+  
 
 
 
