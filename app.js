@@ -216,6 +216,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  /*
+   *(system.storage)
+   */
+  chrome.system.storage.getInfo(function(info) {
+    var numStorageDevices = info.length;
+    var arrayDeviceNames = [];
+    for(var i=0; i < numStorageDevices; i++) {
+      var nameDevice = info[i].name;
+      arrayDeviceNames.push(nameDevice);
+    }
+    var nameStorageDevices = arrayDeviceNames.toString();
+    document.getElementById("nameStorageDevices").innerHTML = nameStorageDevices;
+    document.getElementById("numStorageDevices").innerHTML = numStorageDevices;
+  })
+
 
 
 
