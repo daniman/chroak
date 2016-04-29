@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
             chrome.tabs.remove(tab.id);
           });
         });
-      }  
+      }
     }
   }
 
@@ -105,15 +105,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   );
 
-  /**
-  Doesn't work...confused, nothing get's logged...
-  **/
-  chrome.printerProvider.onPrintRequested.addListener(printCallback)
-  var printCallback = function(printJob)
-  {
-    console.log("hello");
-  };
-
+  // /**
+  // Doesn't work...confused, nothing get's logged...
+  // **/
+  // chrome.printerProvider.onPrintRequested.addListener(printCallback)
+  // var printCallback = function(printJob, resultsCallback)
+  // {
+  //   console.log(printJob);
+  // };
+  // var resultsCallback = function(result){
+  //   console.log(result);
+  // }
 
   /*
    *(system.memory)
@@ -265,11 +267,11 @@ document.addEventListener('DOMContentLoaded', function() {
   chrome.system.storage.onDetached.addListener(function(id) {
     var ul = document.getElementById('knowledge-list');
     var li = "<li>You have removed a storage device.</li>";
-    ul.innerHTML = ul.innerHTML + li;  
+    ul.innerHTML = ul.innerHTML + li;
   })
 
-  
-  
+
+
 
 
 
@@ -300,15 +302,15 @@ document.addEventListener('DOMContentLoaded', function() {
   //   });
   // });
 
-  
+
 
 
 });
 
-// function updateBool(boolName, boolVal) {
-//   chrome.extension.getBackgroundPage()[boolName] = boolVal;
-//   localStorage.setItem(boolName, JSON.stringify(boolVal));
-// }
+function updateBool(boolName, boolVal) {
+  chrome.extension.getBackgroundPage()[boolName] = boolVal;
+  localStorage.setItem(boolName, JSON.stringify(boolVal));
+}
 
 
 // if (window == top) {
