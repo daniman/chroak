@@ -48,3 +48,36 @@ chrome.tabs.onCreated.addListener(function(event) {
     });
   }
 });
+
+
+/*
+ *Declarative Content Stuffs
+ *
+ */
+
+//  var match_rules = {
+//     conditions: [
+//        new chrome.declarativeContent.PageStateMatcher({
+//            //find pages like 'https://*.example.com/*/reports/report.asp'
+//            css: ["video"]
+//        })
+//     ],
+//     //If found, display the Page Action icon registered in the manifest.json
+//     actions: [ new chrome.declarativeContent.ShowPageAction() ]
+// };
+
+// chrome.runtime.onInstalled.addListener(function(details) {
+//     chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+//         chrome.declarativeContent.onPageChanged.addRules([match_rules]);
+//     });
+// });
+
+// // Called when the user clicks on the browser action.
+// chrome.pageAction.onClicked.addListener(function(tab) {
+//   chrome.tabs.executeScript(null, {file: 'content_script.js'},  function(result){
+//         chrome.tabs.sendMessage(tab.id, {action: 'go'}, 
+//             function(response){
+//                 console.log(response);
+//         });
+//   });
+// });

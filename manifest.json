@@ -24,6 +24,13 @@
       "https://daniman.me"
     ]
   },
+  // "page_action": {
+  //      "default_icon": {
+  //         "frog": "frog.png",
+  //         "ghost": "ghost.png"
+  //      },
+  //      "default_title": "Do Something"
+  // },
 
   "permissions": [
     "activeTab",

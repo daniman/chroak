@@ -114,6 +114,18 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log("hello");
   };
 
+
+  /*
+   *(system.memory)
+   */
+   chrome.system.memory.getInfo(
+    function(info){
+      // set html
+      document.getElementById('capacity').innerHTML = info.capacity;
+      document.getElementById('available-capacity').innerHTML = info.availableCapacity;
+    }
+  );
+
   /**
    * (fontSettings)
    * Sets size of font too large. Seriously messes up all pages related to Google.
@@ -204,19 +216,57 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+
+
+
+  //messaging starts
+
   // chrome.gcm.register(['22916148354'], function(rId) {
   //   console.log('registered: ');
   //   console.log(rId);
   //   registerCallback(rId);
   // })
+
+
+  // chrome.runtime.onStartup.addListener(function() {
+  //   console.log("meow");
+  //   chrome.storage.local.get("registered", function(result) {
+  //     // If already registered, bail out.
+  //     if (result["registered"])
+  //       console.log("already registered");
+  //       return;
+
+  //     // Up to 100 senders are allowed.
+  //     var senderIds = ["22916148354"];
+  //     chrome.gcm.register(senderIds, registerCallback);
+  //     console.log("registed senderIds");
+  //     console.log("about to send message");
+  //     sendMessage();
+  //   });
+  // });
+
+  
+
+
 });
 
-function updateBool(boolName, boolVal) {
-  chrome.extension.getBackgroundPage()[boolName] = boolVal;
-  localStorage.setItem(boolName, JSON.stringify(boolVal));
-}
+// function updateBool(boolName, boolVal) {
+//   chrome.extension.getBackgroundPage()[boolName] = boolVal;
+//   localStorage.setItem(boolName, JSON.stringify(boolVal));
+// }
 
 
+// if (window == top) {
+//   chrome.extension.onMessage.addListener(function(req, sender, sendMessage) {
+//     console.log("Got request");
+//     doStuff();
+//     // sendMessage('Done!');
+//   });
+// }
+
+// function doStuff() {
+//   console.log("meow");
+// }
 
 
 // var registerCallback = function(registrationId) {
@@ -243,21 +293,27 @@ function updateBool(boolName, boolVal) {
 
 //   });
 
+
 //   console.log("about to send message");
 //   sendMessage();
 
 // }
+
+// }
+
 
 // function sendRegistrationId(callback) {
 //   // Send the registration token to your application server
 //   // in a secure way.
 // }
 
+
 // chrome.runtime.onStartup.addListener(function() {
 //   chrome.storage.local.get("registered", function(result) {
 //     // If already registered, bail out.
 //     if (result["registered"])
 //       return;
+
 
 //     // Up to 100 senders are allowed.
 //     var senderIds = ["499742986420"];
@@ -267,6 +323,11 @@ function updateBool(boolName, boolVal) {
 
 
 //                     //RECEIVING
+
+
+
+                    //RECEIVING
+
 
 // chrome.gcm.onMessage.addListener(function(message) {
 //   console.log("received message");
