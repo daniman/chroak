@@ -1,4 +1,50 @@
 document.addEventListener('DOMContentLoaded', function() {
+
+  /**
+   * Useful info that can be accessed by any website, not just extensions, but nevertheless good to collect.
+   * Collect user platform, language, online status, and IP address.
+   */
+  document.getElementById('platform').innerHTML = window.navigator.platform;
+  document.getElementById('language').innerHTML = window.navigator.language;
+  document.getElementById('sys-info').innerHTML = window.navigator.userAgent;
+  document.getElementById('chrome-version').innerHTML = getChromeVersion();
+  if (window.navigator.onLine) {
+    document.getElementById('online-status').innerHTML = 'connected';
+    document.getElementById('ip-address').innerHTML = " and your IP address is <span class='info'><span id='addr'></span></span>";
+
+    // Code taken from a stack overflow post: http://stackoverflow.com/questions/18572365/get-local-ip-of-a-device-in-chrome-extension/29514292#29514292
+    getLocalIPs(function(ips) { // <!-- ips is an array of local IP addresses.
+        document.getElementById('addr').innerHTML = ips.join(',');
+    });
+    function getLocalIPs(callback) {
+        var ips = [];
+        var RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
+        var pc = new RTCPeerConnection({
+            // Don't specify any stun/turn servers, otherwise you will
+            // also find your public IP addresses.
+            iceServers: []
+        });
+        // Add a media line, this is needed to activate candidate gathering.
+        pc.createDataChannel('');
+        // onicecandidate is triggered whenever a candidate has been found.
+        pc.onicecandidate = function(e) {
+            if (!e.candidate) { // Candidate gathering completed.
+                pc.close();
+                callback(ips);
+                return;
+            }
+            var ip = /^candidate:.+ (\S+) \d+ typ/.exec(e.candidate.candidate)[1];
+            if (ips.indexOf(ip) == -1) // avoid duplicate entries (tcp/udp)
+                ips.push(ip);
+        };
+        pc.createOffer(function(sdp) {
+            pc.setLocalDescription(sdp);
+        }, function onerror() {});
+    }
+  } else {
+    document.getElementById('online-status').innerHTML = 'not connected';
+  }
+
   /**
    * (tabs)
    * Find the number of tabs and windows a user has open.
@@ -311,6 +357,22 @@ function updateBool(boolName, boolVal) {
   chrome.extension.getBackgroundPage()[boolName] = boolVal;
   localStorage.setItem(boolName, JSON.stringify(boolVal));
 }
+
+function getChromeVersion() {
+    var ua= navigator.userAgent, tem, 
+    M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+    if(/trident/i.test(M[1])){
+        tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+        return 'IE '+(tem[1] || '');
+    }
+    if(M[1]=== 'Chrome'){
+        tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+        if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+    }
+    M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+    if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+    return M.join(' ');
+};
 
 
 // if (window == top) {

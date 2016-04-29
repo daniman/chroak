@@ -3,6 +3,7 @@
   <head>
     <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,700" rel="stylesheet" type="text/css">
+    <!-- <link href="http://daniman.me/style.css" rel="stylesheet" type="text/css"> -->
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="app.js"></script>
     <script src="background.js"></script>
@@ -17,8 +18,6 @@
       <h1>Well, <span class="b">h</span><span class="r">e</span><span class="y">l</span><span class="b">l</span><span class="g">o</span> there.</h1>
       <div>This is <a href="https://www.github.com/daniman/chroak">Chroak</a>, a Chrome Extension that teaches users to be more wary of permission lending and points out loopholes in Chrome's security policy for extensions.</div>
     </div>
-
-
 
       <div>
         <h2>Here are some actions you can take:</h2>
@@ -35,6 +34,9 @@
       <div>
         <h2 id="knowledge">Here are some things your extension knows:</h2>
         <ul id="knowledge-list">
+          <li>You are currently <span id="online-status" class="info"></span> to the internet<span id="ip-address"></span>.</li>
+          <li>You are running on a <span id="platform" class="info"></span> platform in the language <span id="language" class="info"></span>.</li>
+          <li>You are running <span id="chrome-version" class="info"></span>. Other general system info: <span id="sys-info"></span>.</li>
           <li>You have <span id="tabs-number" class="info"></span> tabs open in <span id="windows-number" class="info"></span> different windows.</li>
           <li>You have a <span id="cpu-model" class="info"></span> and are running <span id="num-processors" class="info"></span> processors with <span id="cpu-arch" class="info"></span> architecture.</li>
           <li>You have <span id="num-display" class="info"></span> display(s) running.</li>
@@ -43,6 +45,11 @@
           <li>You are using <span id="numStorageDevices" class="info"></span> storage devices. Their names are <span id="nameStorageDevices" class="info"></span> and they are of the types <span id="typeStorageDevices" class="info"></span> .</li>
         </ul>
       </div>
+
+      <!-- <div> -->
+        <!-- <a href="chrome://quit">boo!</a> -->
+        <!-- <img src="chrome://chrome/dns"> -->
+      <!-- </div> -->
     </div>
 
     <div id="footer">Built with love by some MIT students for our computer security class (<a href="http://courses.csail.mit.edu/6.857/2016/">6.857</a>). Find our code on <a href="https://www.github.com/daniman/chroak">github</a>.</div>

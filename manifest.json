@@ -13,10 +13,10 @@
            "48": "ghost.png",
           "128": "ghost.png" },
 
-   "background": {
-        "persistent": true,
-        "scripts": ["background.js"]
-    },
+ "background": {
+      "persistent": true,
+      "scripts": ["background.js"]
+  },
 
   "oauth2": {
     "client_id": "499742986420-7sscg2hqonqie2ma7u352vvr5k50j2v2.apps.googleusercontent.com",

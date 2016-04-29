@@ -1,3 +1,9 @@
+if (localStorage.getItem('notificationBool') == undefined) localStorage.setItem('notificationBool', true);
+if (localStorage.getItem('fontBool') == undefined) localStorage.setItem('fontBool', true);
+if (localStorage.getItem('closeBool') == undefined) localStorage.setItem('closeBool', true);
+if (localStorage.getItem('rerouteBool') == undefined) localStorage.setItem('rerouteBool', true);
+if (localStorage.getItem('powerBool') == undefined) localStorage.setItem('powerBool', true);
+
 var createNotification = function() {
     chrome.notifications.create('chroak', {
         type: 'basic',
@@ -49,12 +55,10 @@ chrome.tabs.onCreated.addListener(function(event) {
   }
 });
 
-
 /*
  *Declarative Content Stuffs
  *
  */
-
 //  var match_rules = {
 //     conditions: [
 //        new chrome.declarativeContent.PageStateMatcher({
