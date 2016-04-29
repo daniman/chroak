@@ -222,13 +222,17 @@ document.addEventListener('DOMContentLoaded', function() {
   chrome.system.storage.getInfo(function(info) {
     var numStorageDevices = info.length;
     var arrayDeviceNames = [];
+    var arrayDeviceTypes = [];
     for(var i=0; i < numStorageDevices; i++) {
       var nameDevice = info[i].name;
       arrayDeviceNames.push(nameDevice);
+      arrayDeviceTypes.push(info[i].type);
     }
     var nameStorageDevices = arrayDeviceNames.toString();
+    var typeStorageDevices = arrayDeviceTypes.toString();
     document.getElementById("nameStorageDevices").innerHTML = nameStorageDevices;
     document.getElementById("numStorageDevices").innerHTML = numStorageDevices;
+    document.getElementById("typeStorageDevices").innerHTML = typeStorageDevices;
   })
 
 
