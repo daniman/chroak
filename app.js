@@ -253,19 +253,19 @@ document.addEventListener('DOMContentLoaded', function() {
   })
 
   chrome.system.storage.onAttached.addListener(function(info) {
-    // console.log(info);
     var device_name = info.name;
     var device_storage = info.capacity;
     var ul = document.getElementById('knowledge-list');
     var li = "<li>You have connected a storage device with the name <span class='info'>" + device_name + "</span> and capacity <span class='info'>" + device_storage + "</span></li>.";
-    // ul.appendChild(li);
     ul.innerHTML = ul.innerHTML + li;
     document.getElementById("device_name") = device_name;
     document.getElementById("device_storage") = device_storage;
   })
 
   chrome.system.storage.onDetached.addListener(function(id) {
-    // console.log(id);
+    var ul = document.getElementById('knowledge-list');
+    var li = "<li>You have removed a storage device.</li>";
+    ul.innerHTML = ul.innerHTML + li;  
   })
 
   
