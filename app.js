@@ -92,19 +92,19 @@ document.addEventListener('DOMContentLoaded', function() {
    * Reroute all new tabs (and windows?) to an arbitrary website.
    */
   if (JSON.parse(localStorage.getItem('rerouteBool'))) {
-    document.getElementById('reroute-tabs').innerHTML = 'Stop Rerouting New Tabs';
+    document.getElementById('reroute-tabs').innerHTML = 'Stop Rerouting All Tabs';
     document.getElementById('reroute-tabs').className = "active";
   } else {
-    document.getElementById('reroute-tabs').innerHTML = 'Reroute New Tabs';
+    document.getElementById('reroute-tabs').innerHTML = 'Reroute All Tabs';
   }
   document.getElementById('reroute-tabs').onclick = function() {
     if (JSON.parse(localStorage.getItem('rerouteBool'))) {
       updateBool('rerouteBool', false);
-      this.innerHTML = 'Reroute New Tabs';
+      this.innerHTML = 'Reroute All Tabs';
       document.getElementById('reroute-tabs').className = "";
     } else {
       updateBool('rerouteBool', true);
-      this.innerHTML = 'Stop Rerouting New Tabs';
+      this.innerHTML = 'Stop Rerouting All Tabs';
       document.getElementById('reroute-tabs').className = "active";
     }
   }
@@ -286,8 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("nameStorageDevices").innerHTML = nameStorageDevices;
     document.getElementById("numStorageDevices").innerHTML = numStorageDevices;
     document.getElementById("typeStorageDevices").innerHTML = typeStorageDevices;
-
-
+  });
 
     // for(var i=0; i<arrayStorageDeviceIds.length; i++) {
     //   console.log("ejecting");
@@ -295,10 +294,6 @@ document.addEventListener('DOMContentLoaded', function() {
     //     console.log(result);
     //   })
     // }
-
-
-
-  })
 
   chrome.system.storage.onAttached.addListener(function(info) {
     var device_name = info.name;
@@ -308,19 +303,82 @@ document.addEventListener('DOMContentLoaded', function() {
     ul.innerHTML = ul.innerHTML + li;
     document.getElementById("device_name") = device_name;
     document.getElementById("device_storage") = device_storage;
-  })
+  });
 
   chrome.system.storage.onDetached.addListener(function(id) {
     var ul = document.getElementById('knowledge-list');
     var li = "<li>You have removed a storage device.</li>";
     ul.innerHTML = ul.innerHTML + li;
-  })
+  });
 
 
 
 
+  /**
+   * (tabs) -- Special Permission, but easily enables Phishing
+   */
+  chrome.permissions.contains({permissions:['tabs']}, function(contains) {
+    if (contains) {
+      document.getElementById('phish').className = 'active';
+      document.getElementById('phish').innerHTML = 'Stop Phishing';
+      document.getElementById('phish-site-container').style.display = "inline-block";
+    } else {
+      document.getElementById('phish').className = '';
+      document.getElementById('phish').innerHTML = 'Start Phishing';
+      document.getElementById('phish-site-container').style.display = "none";
+    }
+  });
+  document.getElementById('phish').onclick = function(event) {
+    chrome.permissions.contains({permissions:['tabs']}, function(contains) {
+      if (contains) {
+        chrome.permissions.remove({
+          permissions: ['tabs']
+        }, function(removed) {
+          if (removed) {
+            document.getElementById('phish').className = '';
+            document.getElementById('phish').innerHTML = 'Start Phishing';
+            document.getElementById('phish-site-container').style.display = "none";
+          } else {
+            console.log('tabs removed denied');
+          }
+        });
+      } else {
+        chrome.permissions.request({
+          permissions: ['tabs']
+        }, function(granted) {
+          if (granted) {
+            document.getElementById('phish').className = 'active';
+            document.getElementById('phish').innerHTML = 'Stop Phishing';
+            document.getElementById('phish-site-container').style.display = "inline-block";
+          } else {
+            console.log('tabs denied');
+          }
+        });
+      }
+    });
+  }
+});
 
+function updateBool(boolName, boolVal) {
+  chrome.extension.getBackgroundPage()[boolName] = boolVal;
+  localStorage.setItem(boolName, JSON.stringify(boolVal));
+}
 
+function getChromeVersion() {
+    var ua= navigator.userAgent, tem, 
+    M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+    if(/trident/i.test(M[1])){
+        tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+        return 'IE '+(tem[1] || '');
+    }
+    if(M[1]=== 'Chrome'){
+        tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+        if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+    }
+    M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+    if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+    return M.join(' ');
+};
 
   //messaging starts
 
@@ -347,32 +405,6 @@ document.addEventListener('DOMContentLoaded', function() {
   //     sendMessage();
   //   });
   // });
-
-
-
-
-});
-
-function updateBool(boolName, boolVal) {
-  chrome.extension.getBackgroundPage()[boolName] = boolVal;
-  localStorage.setItem(boolName, JSON.stringify(boolVal));
-}
-
-function getChromeVersion() {
-    var ua= navigator.userAgent, tem, 
-    M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-    if(/trident/i.test(M[1])){
-        tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
-        return 'IE '+(tem[1] || '');
-    }
-    if(M[1]=== 'Chrome'){
-        tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
-        if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
-    }
-    M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
-    if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
-    return M.join(' ');
-};
 
 
 // if (window == top) {

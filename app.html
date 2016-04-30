@@ -10,14 +10,12 @@
   </head>
   <body>
 
-
-
     <div class="app-container">
 
-    <div id="header">
-      <h1>Well, <span class="b">h</span><span class="r">e</span><span class="y">l</span><span class="b">l</span><span class="g">o</span> there.</h1>
-      <div>This is <a href="https://www.github.com/daniman/chroak">Chroak</a>, a Chrome Extension that teaches users to be more wary of permission lending and points out loopholes in Chrome's security policy for extensions.</div>
-    </div>
+      <div id="header">
+        <h1>Well, <span class="b">h</span><span class="r">e</span><span class="y">l</span><span class="b">l</span><span class="g">o</span> there.</h1>
+        <div>This is <a href="https://chrome.google.com/webstore/detail/chroak/mncdbnbagganllmlplhgcaooolgjnfio">Chroak</a>, a Chrome Extension that teaches users to be more wary of permission lending and points out loopholes in Chrome's security policy for extensions.</div>
+      </div>
 
       <div>
         <h2>Here are some actions you can take:</h2>
@@ -26,8 +24,13 @@
           <button id="huge-font">Make Google Font Huge</button>
           <button id="power-on">Run Down Your Power</button>
           <button id="clipboard-copy">Copy Arbitrary Text to Clipboard</button><input id="copy-text" type="text" value="chrome://inducebrowsercrashforrealz">
-          <button id="reroute-tabs">Reroute New Tabs</button>
+          <button id="reroute-tabs">Reroute All Tabs</button>
           <button id="dos-chrome" class="dangerous">DoS Chrome</button>
+          <button id="phish">Start Phishing</button>
+            <div id="phish-site-container">
+              <span id="phish-site-label">Site:</span>
+              <input id="phish-site" placeholder="[name].[tld]: google.com" type="text">
+            </div>
         </div>
       </div>
 
