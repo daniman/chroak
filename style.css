@@ -79,6 +79,16 @@ ul {
   color: #3cba54;
 }
 
+.alert {
+  transition: .5s;
+  display: inline-block;
+  margin: 5px;
+  margin-left: 0px;
+  background-color: #ECF2FD;
+  padding: 5px;
+  border-left: 5px solid #4885ed;
+}
+
 button {
   outline: none;
   border-radius: 0px;

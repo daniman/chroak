@@ -208,13 +208,17 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('copy-text').focus();
     document.execCommand('selectAll');
     document.execCommand("Copy", false, null);
-    // chrome.notifications.create('chroak', {
-    //     type: 'basic',
-    //     iconUrl: 'frog.png',
-    //     title: 'You\'ve Copied Text',
-    //     message: 'The text "' + document.getElementById('copy-text').value + '" has been copied to your clipboard.',
-    //     isClickable: false
-    //  }, function(notificationId) {});
+
+    var div = document.createElement('div');
+    div.className = "alert";
+    div.innerHTML = 'The text <i><b>"' + document.getElementById('copy-text').value + '</b></i> has been copied to your clipboard.';
+    document.getElementById('alerts').appendChild(div);
+    setTimeout(function() {
+      div.style.opacity = "0";
+    }, 3500)
+    setTimeout(function() {
+      div.remove();
+    }, 4000)
   }
 
   /**

@@ -3,7 +3,7 @@
 
   "name": "Chroak",
   "description": "6.857 Final Project",
-  "version": "1.2",
+  "version": "1.3",
 
   "chrome_url_overrides": {
     "newtab": "app.html"
