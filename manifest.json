@@ -64,34 +64,34 @@
   // },   
 
   "permissions": [
-    "activeTab",
-    "alarms",
+    // "activeTab",
+    // "alarms",
     "background",
-    "browsingData",
+    // "browsingData",
     "clipboardWrite",
-    "contextMenus",
-    "cookies",
-    "declarativeContent",
+    // "contextMenus",
+    // "cookies",
+    // "declarativeContent",
     "fontSettings",
-    "gcm",
+    // "gcm",
     "identity",
-    "idle",
-    "notifications",
+    // "idle",
     "power",
-    "printerProvider",
+    // "printerProvider",
     "sessions",
-    "storage",
+    // "storage",
     "system.cpu",
     "system.display",
     "system.memory",
-    "system.storage",
-    "tts",
-    "unlimitedStorage",
-    "webRequest",
-    "webRequestBlocking"
+    "system.storage"
+    // "tts",
+    // "unlimitedStorage",
+    // "webRequest",
+    // "webRequestBlocking"
   ],
 
   "optional_permissions": [
-    "tabs"
+    "tabs",
+    "notifications"
   ]
 }

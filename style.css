@@ -97,20 +97,20 @@ button:hover {
   transition: .5s;
 }
 
+#phish, #toggle-notifications {
+  border-color: #f4c20d;
+}
+
 button.active {
-  border-color: #db3236;
-  background-color: #FBE9E7;
+  border-color: #db3236 !important;
+  background-color: #FBE9E7 !important;
 }
 
 button.active:hover {
-  background-color: #FFCCBC;
+  background-color: #FFCCBC !important;
 }
 
-button.dangerous {
-  // color: #fff;
-  // background-color: #212121;
-  // border-color: #db3236;
-}
+
 
 #phish {
   margin-right: 0px;
@@ -131,7 +131,7 @@ button.dangerous {
 #phish-site-container {
   display: none;
   background-color: #FBE9E7;
-  padding-left: 10px;
+  padding-left: 5px;
   margin-left: -5px;
   height: 35px;
   transition: .5s;

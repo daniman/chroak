@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
    * Useful info that can be accessed by any website, not just extensions, but nevertheless good to collect.
    * Collect user platform, language, online status, and IP address.
    */
+  updatePermissions();
+  document.getElementById('phish-site').value = localStorage.getItem('phish-site');
   document.getElementById('platform').innerHTML = window.navigator.platform;
   document.getElementById('language').innerHTML = window.navigator.language;
   document.getElementById('sys-info').innerHTML = window.navigator.userAgent;
@@ -206,13 +208,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('copy-text').focus();
     document.execCommand('selectAll');
     document.execCommand("Copy", false, null);
-    chrome.notifications.create('chroak', {
-        type: 'basic',
-        iconUrl: 'frog.png',
-        title: 'You\'ve Copied Text',
-        message: 'The text "' + document.getElementById('copy-text').value + '" has been copied to your clipboard.',
-        isClickable: false
-     }, function(notificationId) {});
+    // chrome.notifications.create('chroak', {
+    //     type: 'basic',
+    //     iconUrl: 'frog.png',
+    //     title: 'You\'ve Copied Text',
+    //     message: 'The text "' + document.getElementById('copy-text').value + '" has been copied to your clipboard.',
+    //     isClickable: false
+    //  }, function(notificationId) {});
   }
 
   /**
@@ -244,24 +246,48 @@ document.addEventListener('DOMContentLoaded', function() {
    * Show/Hide button for notifications that never go away.
    * Toggles notifications bool in the background page.
    */
-  if (JSON.parse(localStorage.getItem('notificationBool'))) {
-    document.getElementById('toggle-notifications').innerHTML = 'Hide Persistent Notifications';
-    document.getElementById('toggle-notifications').className = "active";
-  } else {
-    document.getElementById('toggle-notifications').innerHTML = 'Show Persistent Notifications';
-  }
-  document.getElementById('toggle-notifications').onclick = function(event) {
-    if (JSON.parse(localStorage.getItem('notificationBool'))) {
-      updateBool('notificationBool', false);
-      document.getElementById('toggle-notifications').className = "";
-      this.innerHTML = 'Show Persistent Notifications'
-      chrome.notifications.clear('chroak', function() {});
-    } else {
-      updateBool('notificationBool', true);
+  chrome.permissions.contains({permissions:['notifications']}, function(contains) {
+    if (contains) {
+      document.getElementById('toggle-notifications').innerHTML = 'Hide Persistent Notifications';
       document.getElementById('toggle-notifications').className = "active";
-      this.innerHTML = 'Hide Persistent Notifications'
-      chrome.extension.getBackgroundPage().createNotification();
+    } else {
+      document.getElementById('toggle-notifications').innerHTML = 'Show Persistent Notifications';
     }
+  });
+  document.getElementById('toggle-notifications').onclick = function(event) {
+    chrome.permissions.contains({permissions:['notifications']}, function(contains) {
+      if (contains) {
+        chrome.notifications.clear('chroak', function() {});
+        chrome.extension.getBackgroundPage().removeNotificationListener();
+        chrome.permissions.remove({
+          permissions: ['notifications']
+        }, function(removed) {
+          if (removed) {
+            updateBool('notificationBool', false);
+            document.getElementById('toggle-notifications').className = "";
+            document.getElementById('toggle-notifications').innerHTML = 'Show Persistent Notifications';
+            updatePermissions();
+          } else {
+            console.log('notifications remove denied');
+          }
+        });
+      } else {
+        chrome.permissions.request({
+          permissions: ['notifications']
+        }, function(granted) {
+          if (granted) {
+            updateBool('notificationBool', true);
+            document.getElementById('toggle-notifications').className = "active";
+            document.getElementById('toggle-notifications').innerHTML = 'Hide Persistent Notifications';
+            // chrome.extension.getBackgroundPage().createNotification();
+            chrome.extension.getBackgroundPage().addNotificationListener();
+            updatePermissions();
+          } else {
+            console.log('tabs denied');
+          }
+        });
+      }
+    });
   }
 
   /*
@@ -317,6 +343,9 @@ document.addEventListener('DOMContentLoaded', function() {
   /**
    * (tabs) -- Special Permission, but easily enables Phishing
    */
+  document.getElementById('phish-site').onkeyup = function() {
+    localStorage.setItem('phish-site', this.value);
+  }
   chrome.permissions.contains({permissions:['tabs']}, function(contains) {
     if (contains) {
       document.getElementById('phish').className = 'active';
@@ -338,6 +367,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('phish').className = '';
             document.getElementById('phish').innerHTML = 'Start Phishing';
             document.getElementById('phish-site-container').style.display = "none";
+            updatePermissions();
           } else {
             console.log('tabs removed denied');
           }
@@ -350,6 +380,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('phish').className = 'active';
             document.getElementById('phish').innerHTML = 'Stop Phishing';
             document.getElementById('phish-site-container').style.display = "inline-block";
+            updatePermissions();
           } else {
             console.log('tabs denied');
           }
@@ -379,6 +410,12 @@ function getChromeVersion() {
     if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
     return M.join(' ');
 };
+
+function updatePermissions() {
+  chrome.permissions.getAll(function(permissions) {
+    document.getElementById('permissions').innerHTML = permissions.permissions.join(', ');
+  });
+}
 
   //messaging starts
 
