@@ -75,16 +75,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (JSON.parse(localStorage.getItem('closeBool'))) {
       updateBool('closeBool', false);
       document.getElementById('dos-chrome').className = "";
+      document.getElementById('dos-chrome').innerHTML = 'DoS Chrome';
     } else {
       var confirmed = confirm('Are you sure you want to DoS Chrome? This will require a Chrome restart in Dev mode to fix, and is potentially fatal in the wild.');
       if (confirmed) {
+        document.getElementById('dos-chrome').innerHTML = 'Stop Chrome DoS';
         updateBool('closeBool', true);
-        chrome.tabs.query({}, function(tabs) {
-          tabs.forEach(function(tab) {
-            console.log(tab.id);
-            chrome.tabs.remove(tab.id);
-          });
-        });
+        chrome.extension.getBackgroundPage().dos();
       }
     }
   }

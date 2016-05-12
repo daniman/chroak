@@ -40,13 +40,6 @@
               "linux": "Ctrl+Shift+J"
             }
           }
-          // "_execute_page_action": {
-          //   "suggested_key": {
-          //     "default": "Ctrl+Shift+E",
-          //     "windows": "Alt+Shift+P",
-          //     "mac": "Alt+Shift+P"
-          //   }
-          // }
         },
 
   "oauth2": {
@@ -54,40 +47,18 @@
     "scopes": [
       "https://daniman.me"
     ]
-  },
-  // "page_action": {
-  //      "default_icon": {
-  //         "frog": "frog.png",
-  //         "ghost": "ghost.png"
-  //      },
-  //      "default_title": "Do Something"
-  // },   
+  }, 
 
   "permissions": [
-    // "activeTab",
-    // "alarms",
     "background",
-    // "browsingData",
     "clipboardWrite",
-    // "contextMenus",
-    // "cookies",
-    // "declarativeContent",
     "fontSettings",
-    // "gcm",
-    "identity",
-    // "idle",
     "power",
-    // "printerProvider",
     "sessions",
-    // "storage",
     "system.cpu",
     "system.display",
     "system.memory",
     "system.storage"
-    // "tts",
-    // "unlimitedStorage",
-    // "webRequest",
-    // "webRequestBlocking"
   ],
 
   "optional_permissions": [
